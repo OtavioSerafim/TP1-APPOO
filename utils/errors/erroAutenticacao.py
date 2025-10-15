@@ -1,4 +1,6 @@
-from erroBase import ErroBase
+"""Erro específico para falhas de autenticação."""
+
+from .erroBase import ErroBase
 
 class ErroAutenticacao(ErroBase):
     """Erro de autenticação."""
