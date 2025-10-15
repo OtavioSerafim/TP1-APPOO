@@ -1,9 +1,16 @@
 """Modelo de usuário base, incluindo autenticação e hashing de senha."""
 
+from pathlib import Path
+import sys
 from datetime import date
-from model import Model
 from bcrypt import hashpw, gensalt
-from ..utils.errors.erroAutenticacao import ErroAutenticacao
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from model import Model
+from utils.errors.erroAutenticacao import ErroAutenticacao
 
 
 class Usuario(Model):
@@ -14,7 +21,7 @@ class Usuario(Model):
         super().__init__(
             connection,
             table_name='usuarios',
-            columns=['id', 'nome', 'email', 'tipo_usuario', 'criado_em', 'atualizado_em']
+            columns=['id', 'nome', 'email', 'senha', 'tipo_usuario', 'criado_em', 'atualizado_em']
         )
 
     def prepare_create_data(self, data):
