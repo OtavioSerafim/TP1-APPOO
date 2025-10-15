@@ -41,6 +41,13 @@ class Model(modelBase):
         self.cursor.execute(query, (record_id,))
         return self.cursor.fetchone()
 
+    def get_all(self):
+        """Retorna todos os registros existentes na tabela."""
+        selected_columns = ', '.join(self.columns) if self.columns else '*'
+        query = f"SELECT {selected_columns} FROM {self.table_name}"
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
     def update(self, record_id, data):
         """Atualiza campos do registro indicado."""
         payload = self.prepare_update_data(dict(data))
