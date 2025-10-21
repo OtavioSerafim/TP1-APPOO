@@ -12,8 +12,10 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from model import Model
+from .model import Model
 from utils.errors.erroAutenticacao import ErroAutenticacao
+from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
+from utils.errors.erroConfiguracao import ErroConfiguracao
 
 
 class Usuario(Model):
@@ -31,7 +33,7 @@ class Usuario(Model):
         """Aplica hashing à senha e adiciona datas padrão."""
         senha = data.pop('senha', None)
         if senha is None:
-            raise ValueError("Campo 'senha' é obrigatório para criar um usuário.")
+            raise ErroDadosInvalidos("Campo 'senha' é obrigatório para criar um usuário.")
 
         data['senha'] = hashpw(senha.encode('utf-8'), gensalt()).decode('utf-8')
         data.setdefault('criado_em', date.today())
@@ -63,7 +65,7 @@ class Usuario(Model):
 
         secret = os.getenv("JWT_SECRET")
         if not secret:
-            raise RuntimeError("JWT_SECRET não está configurado nas variáveis de ambiente.")
+            raise ErroConfiguracao("JWT_SECRET não está configurado nas variáveis de ambiente.")
 
         payload = {
             "sub": user[0],
