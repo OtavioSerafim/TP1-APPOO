@@ -1,6 +1,7 @@
 """Implementações genéricas de CRUD reutilizáveis para tabelas do banco."""
 
-from modelBase import modelBase
+from .modelBase import modelBase
+from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
 
 
 class Model(modelBase):
@@ -25,7 +26,7 @@ class Model(modelBase):
         """Insere um registro retornando o identificador gerado."""
         payload = self.prepare_create_data(dict(data))
         if not payload:
-            raise ValueError('Dados para criação não podem ser vazios.')
+            raise ErroDadosInvalidos('Dados para criação não podem ser vazios.')
 
         columns = ', '.join(payload.keys())
         placeholders = ', '.join(['?'] * len(payload))
@@ -52,7 +53,7 @@ class Model(modelBase):
         """Atualiza campos do registro indicado."""
         payload = self.prepare_update_data(dict(data))
         if not payload:
-            raise ValueError('Dados para atualização não podem ser vazios.')
+            raise ErroDadosInvalidos('Dados para atualização não podem ser vazios.')
 
         assignments = ', '.join(f"{column} = ?" for column in payload.keys())
         query = f"UPDATE {self.table_name} SET {assignments} WHERE {self.primary_key} = ?"
