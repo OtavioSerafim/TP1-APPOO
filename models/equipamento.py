@@ -2,7 +2,8 @@
 
 from datetime import date
 
-from model import Model
+from .model import Model
+from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
 
 
 class Equipamento(Model):
@@ -33,7 +34,7 @@ class Equipamento(Model):
 
     def _validar_status(self, status):
         if status not in self.STATUS_VALIDOS:
-            raise ValueError(
+            raise ErroDadosInvalidos(
                 "Status inválido. Use 'disponivel', 'quebrada' ou 'no_conserto'."
             )
 
