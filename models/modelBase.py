@@ -16,6 +16,11 @@ class modelBase(ABC):
         pass
 
     @abstractmethod
+    def prepare_create_data(self, data):
+        """Ajusta o payload antes de delegar a criação."""
+        pass
+
+    @abstractmethod
     def read(self, id):
         """Retorna um registro correspondente ao identificador informado."""
         pass
@@ -23,6 +28,11 @@ class modelBase(ABC):
     @abstractmethod
     def update(self, id, data):
         """Atualiza o registro ``id`` com os valores providos em ``data``."""
+        pass
+
+    @abstractmethod
+    def prepare_update_data(self, data):
+        """Normaliza os dados antes de executar uma atualização."""
         pass
 
     @abstractmethod
