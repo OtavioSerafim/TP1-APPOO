@@ -1,9 +1,12 @@
 """Modelo de usuário base, incluindo autenticação e hashing de senha."""
 
+import os
 from pathlib import Path
 import sys
-from datetime import date
-from bcrypt import hashpw, gensalt
+from datetime import date, datetime, timedelta
+
+import jwt
+from bcrypt import checkpw, hashpw, gensalt
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
@@ -44,10 +47,33 @@ class Usuario(Model):
         return data
 
     def authenticate(self, email, senha):
-        """Valida credenciais retornando dados essenciais do usuário."""
-        query = f"SELECT id, nome, email, senha FROM {self.table_name} WHERE email = ?"
+        """Valida credenciais e retorna um token JWT de sessão."""
+        query = (
+            f"SELECT id, nome, email, senha, tipo_usuario "
+            f"FROM {self.table_name} WHERE email = ?"
+        )
         self.cursor.execute(query, (email,))
         user = self.cursor.fetchone()
-        if user and hashpw(senha.encode('utf-8'), user[3].encode('utf-8')) == user[3].encode('utf-8'):
-            return {'id': user[0], 'nome': user[1], 'email': user[2], 'tipo_usuario': user[3]}
-        raise ErroAutenticacao("Email ou senha inválidos.")
+        if not user:
+            raise ErroAutenticacao("Email ou senha inválidos.")
+
+        stored_hash = user[3].encode('utf-8')
+        if not checkpw(senha.encode('utf-8'), stored_hash):
+            raise ErroAutenticacao("Email ou senha inválidos.")
+
+        secret = os.getenv("JWT_SECRET")
+        if not secret:
+            raise RuntimeError("JWT_SECRET não está configurado nas variáveis de ambiente.")
+
+        payload = {
+            "sub": user[0],
+            "nome": user[1],
+            "email": user[2],
+            "role": user[4],
+            "iat": datetime.utcnow(),
+            "exp": datetime.utcnow() + timedelta(hours=24),
+        }
+        token = jwt.encode(payload, secret, algorithm="HS256")
+        if isinstance(token, bytes):
+            token = token.decode("utf-8")
+        return token
