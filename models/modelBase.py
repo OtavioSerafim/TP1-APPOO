@@ -29,3 +29,8 @@ class modelBase(ABC):
     def delete(self, id):
         """Remove o registro identificado por ``id``."""
         pass
+    
+    @abstractmethod
+    def get_all(self):
+        """Retorna todos os registros da tabela associada."""
+        pass
