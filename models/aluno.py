@@ -14,7 +14,7 @@ class _AlunoModel(Model):
         super().__init__(
             connection,
             table_name='alunos',
-            columns=['id', 'face_embedding', 'data_ultima_entrada'],
+            columns=['id', 'face_embedding', 'data_ultima_entrada', 'personal_id'],
             primary_key='id'
         )
 
@@ -45,7 +45,8 @@ class Aluno(Usuario):
         """Cria o usuário e persiste as informações específicas de aluno."""
         aluno_data = {
             'face_embedding': data.pop('face_embedding', None),
-            'data_ultima_entrada': data.pop('data_ultima_entrada', None)
+            'data_ultima_entrada': data.pop('data_ultima_entrada', None),
+            'personal_id': data.pop('personal_id', None)
         }
         data['tipo_usuario'] = 'aluno'
         usuario_id = super().create(data)
@@ -69,7 +70,7 @@ class Aluno(Usuario):
 
     def update(self, usuario_id, data):
         """Sincroniza alterações entre a base de usuários e o detalhe de alunos."""
-        aluno_data = {k: data.pop(k) for k in ['face_embedding', 'data_ultima_entrada'] if k in data}
+        aluno_data = {k: data.pop(k) for k in ['face_embedding', 'data_ultima_entrada', 'personal_id'] if k in data}
         updated_rows = 0
 
         if any(key in data for key in ['nome', 'email']):

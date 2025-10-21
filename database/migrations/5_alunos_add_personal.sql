@@ -1,0 +1,1 @@
+ALTER TABLE alunos ADD COLUMN personal_id INTEGER REFERENCES personais(id) ON DELETE SET NULL;
