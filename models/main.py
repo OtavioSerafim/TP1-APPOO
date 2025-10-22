@@ -8,14 +8,16 @@ from .gestor import Gestor
 from .equipamento import Equipamento
 from .ficha import Ficha
 from .exercicio import Exercicio
+from .plano import Plano
 
 __all__ = [
-	"Model",
-	"Usuario",
-	"Aluno",
-	"Personal",
-	"Gestor",
-	"Equipamento",
-	"Ficha",
-	"Exercicio",
+    "Model",
+    "Usuario",
+    "Aluno",
+    "Personal",
+    "Gestor",
+    "Equipamento",
+    "Ficha",
+    "Exercicio",
+    "Plano",
 ]

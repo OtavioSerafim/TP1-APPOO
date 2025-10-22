@@ -9,6 +9,7 @@ from .main import (
     Equipamento,
     Ficha,
     Exercicio,
+    Plano,
 )
 
 __all__ = [
@@ -20,4 +21,5 @@ __all__ = [
     "Equipamento",
     "Ficha",
     "Exercicio",
+    "Plano",
 ]

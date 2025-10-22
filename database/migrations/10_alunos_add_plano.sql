@@ -1,0 +1,2 @@
+ALTER TABLE alunos ADD COLUMN plano_id INTEGER REFERENCES planos(id) ON DELETE SET NULL;
+ALTER TABLE alunos ADD COLUMN plano_data_inicio TEXT;
