@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 
-class modelBase(ABC):
+class ModelBase(ABC):
     """Define operações CRUD obrigatórias para modelos concretos."""
 
     def __init__(self, connection):

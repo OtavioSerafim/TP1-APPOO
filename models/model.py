@@ -1,10 +1,10 @@
 """Implementações genéricas de CRUD reutilizáveis para tabelas do banco."""
 
-from .modelBase import modelBase
+from .modelBase import ModelBase
 from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
 
 
-class Model(modelBase):
+class Model(ModelBase):
     """Fornece operações CRUD básicas para uma tabela específica."""
 
     def __init__(self, connection, table_name, columns=None, primary_key='id'):
