@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Academia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Seja bem vindo(a)!</h1>
+    <div class="login">
+        <h2>Login</h2>
+        <form id="login-form">
+            <div class="login-field">
+                <label for="login-email"><p>E-mail:</p></label>
+                <input type="text" name="email" id="login-email" required>
+            </div>
+            <div class="login-field">
+                <label for="login-pwd"><p>Senha:</p></label>
+                <input type="password" name="password" id="login-pwd">
+            </div>
+            <button type="submit" class="login-submit">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>
