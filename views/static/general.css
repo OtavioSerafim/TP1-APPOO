@@ -1,0 +1,29 @@
+:root {
+    --blue-900: #01081b;
+    --blue-600: #032c7d;
+    --blue-500: #0841c9;
+    --blue-400: #1d97f1;
+    --blue-100: #baeef8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+    
+    font-family: "Funnel Display", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    text-decoration: none;
+}
+
+h1, h2, h3 {
+    font-family: "Special Gothic Expanded One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+p {
+    color: var(--blue-900);
+}

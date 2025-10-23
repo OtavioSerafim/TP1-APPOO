@@ -17,13 +17,18 @@
         <form id="login-form">
             <div class="login-field">
                 <label for="login-email"><p>E-mail:</p></label>
-                <input type="text" name="email" id="login-email" required>
+                <input type="email" name="email" id="login-email" required>
             </div>
             <div class="login-field">
                 <label for="login-pwd"><p>Senha:</p></label>
                 <input type="password" name="password" id="login-pwd">
             </div>
-            <button type="submit" class="login-submit">Entrar</button>
+            <div class="actions">
+                <button type="submit" class="login-submit">Entrar</button>
+                <div class="signup">
+                    <p>Novo usuário?</p><a href="">Cadastre-se</a>
+                </div>
+            </div>
         </form>
     </div>
 </body>

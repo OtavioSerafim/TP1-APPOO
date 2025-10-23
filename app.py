@@ -12,6 +12,7 @@ app = Flask(
 app.config.from_object(Config)
 
 app.add_url_rule('/', 'login', UserController.login)
+app.add_url_rule('/cadastro', 'cadastro', UserController.cadastro)
 
 if (__name__) == '__main__':
     app.run(debug=True)
