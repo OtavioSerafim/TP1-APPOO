@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor | Academia</title>
+    <title>Equipamentos | Academia</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='home-gestor.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='equipamentos.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
@@ -22,8 +22,18 @@
             <a href="">Planos</a>
         </div>
     </div>
-    <div class="instruction">
-        <h2>Escolha um item no menu à esquerda</h2>
+    <div class="page-content">
+        <h1>Equipamentos</h1>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Status</th>
+                <th>Criado em</th>
+                <th>Atualizado em</th>
+            </tr>   
+        </table>
     </div>
 </body>
 </html>
