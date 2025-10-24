@@ -1,6 +1,5 @@
 import os
 from flask import Flask
-from config import Config
 from controller.user_controller import UserController
 
 app = Flask(
@@ -9,7 +8,6 @@ app = Flask(
     static_folder=os.path.join('views', 'static'),
     static_url_path='/static'
 )
-app.config.from_object(Config)
 
 app.add_url_rule('/', 'login', UserController.login)
 app.add_url_rule('/cadastro', 'cadastro', UserController.cadastro)
