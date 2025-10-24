@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro | Academia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cadastro.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="signup">
+        <h2>Cadastro</h2>
+        <form id="signup-form">
+            <div class="signup-field">
+                <label for="signup-name"><p>Nome completo:</p></label>
+                <input type="text" name="name" id="signup-name" required>
+            </div>
+            <div class="signup-field">
+                <label for="signup-email"><p>E-mail:</p></label>
+                <input type="email" name="email" id="signup-email" required>
+            </div>
+            <div class="signup-field">
+                <label for="signup-pwd"><p>Senha:</p></label>
+                <input type="password" name="password" id="signup-pwd">
+            </div>
+            <div class="signup-radio">
+                <p>Papel:</p>
+                <div class="radio-item">
+                    <input type="radio" id="gestor" name="signup-function" value="gestor">
+                    <label for="signup-function">Gestor</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="personal" name="signup-function" value="personal">
+                    <label for="signup-function">Personal</label>
+                </div>
+            </div>
+            <button type="submit" class="signup-submit">Cadastrar</button>
+        </form>
+    </div>
+</body>
+</html>
