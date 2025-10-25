@@ -1,5 +1,7 @@
 from flask import render_template
 
+from utils.decorators.Autenticado import autenticado
+
 class UserController:
     @staticmethod
     def login():
@@ -10,10 +12,12 @@ class UserController:
         return render_template('cadastro.html')
     
     @staticmethod
+    @autenticado
     def gestor():
         return render_template('home-gestor.html')
     
     @staticmethod
+    @autenticado
     def equipamentos():
         return render_template('equipamentos.html')
 
