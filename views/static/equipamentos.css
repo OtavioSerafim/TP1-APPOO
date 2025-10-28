@@ -12,6 +12,7 @@ body {
     padding: 2rem;
     background-color: var(--blue-100);
     border-radius: 0 10px 10px 0;
+    position: fixed;
 }
 
 .side-menu h2 {
@@ -34,19 +35,33 @@ body {
     color: var(--blue-400-hover);
 }
 
+.page-content-container {
+    width: 100vw;
+}
+
 .page-content {
     display: flex;
     flex-direction: column;
     gap: 4rem;
-    width: 80vw;
+    width: calc(80vw - 2rem);
+    height: calc(100vh - 2rem);
     background-color: var(--blue-100);
     border-radius: 10px;
     margin: 1rem;
     padding: 4rem;
+    right: 0;
+    position: absolute;
+    overflow-y: auto;
 }
 
 .page-content h1 {
     color: var(--blue-900);
+}
+
+.tabela {
+    max-height: 60vh;
+    overflow: auto;
+    border-radius: 5px;
 }
 
 .page-content table {
@@ -55,6 +70,12 @@ body {
     table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
+}
+
+.page-content table thead, .page-content table tbody, .page-content table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 
 .page-content table th {
@@ -66,4 +87,149 @@ body {
     width: calc(100%/6);
     padding: 5px;
     border: none;
+}
+
+.page-content table td {
+    color: var(--blue-900);
+    background-color: var(--blue-50);
+    text-align: center;
+}
+
+.page-content table tr:nth-child(odd) td {
+    background-color: var(--blue-100);
+}
+
+.page-content table td a {
+    color: var(--blue-500);
+    margin-left: .5rem;
+}
+
+.page-content table td button {
+    height: 2rem;
+    aspect-ratio: 1/1;
+    padding: .3rem;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    color: white;
+    background-color: var(--blue-500);
+    transition: all .2s ease;
+}
+
+.page-content table td button:hover i {
+    color: white !important;
+}
+
+.page-content table td button.del-yes:hover {
+    cursor: pointer;
+    background-color: green;
+}
+
+.page-content table td button.del-no:hover {
+    cursor: pointer;
+    background-color: rgb(187, 0, 0);
+}
+
+.page-content table td a i, .page-content table td button i {
+    transition: all 0.2s ease;
+}
+
+.page-content table td a:hover i, .page-content table td button:hover i {
+    transform: scale(1.2);
+    color: var(--blue-900);
+    cursor: pointer;
+}
+
+.cadastrar {
+    width: fit-content;
+    padding: .8rem 1.5rem;
+    border-radius: 7px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    background-color: var(--blue-400);
+    color: white;
+    transition: all .2s ease;
+}
+
+.cadastrar:hover {
+    cursor: pointer;
+    background-color: var(--blue-600);
+}
+
+.editing-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+td.editing .status-editor {
+    max-height: unset;
+    padding: 1rem;
+    margin-top: .5rem;
+}
+
+td.editing .edit-status {
+    display: none;
+}
+
+td .edit-cancel {
+    display: none;
+    width: fit-content;
+}
+
+td.editing .edit-cancel {
+    display: block;
+}
+
+.status-editor {
+    max-height: 0;
+    overflow: hidden;
+    background-color: #032c7d17;
+    border-radius: 7px;
+    transition: all .2s ease-in-out;
+}
+
+.machine-radio {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.radio-item {
+    text-align: left;
+}
+
+.radio-item, .machine-submit {
+    width: fit-content;
+}
+
+.delete-confirm {
+    max-height: 0;
+    overflow: hidden;
+    transition: all .2s ease-in-out;
+}
+
+td.deleting .delete-confirm {
+    max-height: unset;
+}
+
+td.deleting .delete {
+    display: none;
+}
+
+.machine-submit {
+    padding: .4rem;
+    border-radius: 7px;
+    border: none;
+    background-color: var(--blue-400);
+    color: white;
+    transition: all .2s ease;
+    align-self: center;
+}
+
+.machine-submit:hover {
+    cursor: pointer;
+    background-color: var(--blue-600);
 }

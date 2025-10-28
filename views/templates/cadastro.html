@@ -14,10 +14,10 @@
 <body>
     <div class="signup">
         <h2>Cadastro</h2>
-        <form id="signup-form">
+        <form id="signup-form" method="post">
             <div class="signup-field">
                 <label for="signup-name"><p>Nome completo:</p></label>
-                <input type="text" name="name" id="signup-name" required>
+                <input type="text" name="nome" id="signup-name" required>
             </div>
             <div class="signup-field">
                 <label for="signup-email"><p>E-mail:</p></label>
@@ -25,17 +25,17 @@
             </div>
             <div class="signup-field">
                 <label for="signup-pwd"><p>Senha:</p></label>
-                <input type="password" name="password" id="signup-pwd">
+                <input type="password" name="senha" id="signup-pwd">
             </div>
             <div class="signup-radio">
                 <p>Papel:</p>
                 <div class="radio-item">
-                    <input type="radio" id="gestor" name="signup-function" value="gestor">
-                    <label for="signup-function">Gestor</label>
+                    <input type="radio" id="gestor" name="tipo_usuario" value="gestor" required>
+                    <label for="gestor">Gestor</label>
                 </div>
                 <div class="radio-item">
-                    <input type="radio" id="personal" name="signup-function" value="personal">
-                    <label for="signup-function">Personal</label>
+                    <input type="radio" id="personal" name="tipo_usuario" value="personal">
+                    <label for="personal">Personal</label>
                 </div>
             </div>
             <button type="submit" class="signup-submit">Cadastrar</button>
