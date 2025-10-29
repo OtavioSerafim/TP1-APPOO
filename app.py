@@ -1,9 +1,12 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, g, redirect, url_for
 from models import Models
 from controller.user_controller import UserController
 from controller.auth_controller import AuthController
 from utils.errors.erroAutenticacao import ErroAutenticacao
+
+load_dotenv()
 
 app = Flask(
     __name__,
@@ -11,6 +14,11 @@ app = Flask(
     static_folder=os.path.join('views', 'static'),
     static_url_path='/static'
 )
+
+# SECRET_KEY para sessões e flash messages
+app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
+if not app.config['SECRET_KEY']:
+    raise ValueError("FLASK_SECRET_KEY não definida. Configure no .env")
 
 
 @app.before_request
@@ -24,7 +32,7 @@ def teardown_models(exc=None):
         models.close()
 
 app.add_url_rule('/', 'login', UserController.login)
-app.add_url_rule('/cadastro', 'cadastro', UserController.cadastro)
+app.add_url_rule('/cadastro', 'cadastro', UserController.cadastro, methods=['GET', 'POST'])
 app.add_url_rule('/gestor', 'gestor', UserController.gestor)
 app.add_url_rule('/gestor/equipamentos', 'equipamentos', UserController.equipamentos)
 app.add_url_rule('/gestor/equipamentos/novo', 'cadastro-equipamento', UserController.cadastro_equipamento)
