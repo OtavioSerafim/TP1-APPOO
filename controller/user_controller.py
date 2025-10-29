@@ -1,5 +1,7 @@
 from flask import render_template
 
+from utils.decorators.Autenticado import autenticado
+
 class UserController:
     @staticmethod
     # tela de login de um usuário no programa
@@ -13,11 +15,13 @@ class UserController:
     
     # tela incial - versaõ do gestor
     @staticmethod
+    @autenticado
     def gestor():
         return render_template('home-gestor.html')
     
     # tela de gestão e visualização de equipamentos - exclusiva do gestor
     @staticmethod
+    @autenticado
     def equipamentos():
         return render_template('equipamentos.html')
 
