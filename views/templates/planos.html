@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos | Academia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='planos.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <!-- menu lateral presente em todas as telas dos usuários -->
+    <div class="side-menu">
+        <!-- incluir nome do gestor -->
+        <h2>Olá, gestor!</h2>
+        <div class="menu-items">
+            <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
+            <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
+            <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
+            <a href="{{ url_for('planos') }}">Planos</a>
+        </div>
+    </div>
+    <div class="page-content-container">
+        <div class="page-content">
+            <h1>Planos</h1>
+            <div class="plans-cards">
+                <div class="plan-card">
+                    <h2>Nome do plano</h2>
+                    <p>
+                        <strong>Descrição do plano:</strong> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt consequatur voluptates impedit veritatis, aperiam commodi.
+                    </p>
+                    <h3>Valor mensal: R$XX,XX</h3>
+                    <h3>Duração: XX meses</h3>
+                    <div class="plan-actions">
+                        <button class="plan-edit"><i class="fa fa-pencil"></i></button>
+                        <div class="delete-container">
+                            <a class="delete"><i class="fa fa-trash-o"></i></a>
+                            <div class="delete-confirm">
+                                <button class="del-yes"><i class="fa fa-check"></i></button>
+                                <button class="del-no"><i class="fa fa-close"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.plan-actions').addEventListener('click', (e) => {
+            // Deletar plano
+            if (e.target.closest('.delete')) {
+                const deleteDiv = e.target.closest('.delete-container');
+                deleteDiv.classList.add('deleting');
+            }
+
+            // Cancelar deleção
+            if (e.target.closest('.del-no')) {
+                const deleteDiv = e.target.closest('.delete-container');
+                deleteDiv.classList.remove('deleting');
+            }
+        });
+    </script>
+</body>
+</html>

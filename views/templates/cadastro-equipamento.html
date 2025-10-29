@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Equipamento | Academia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cadastro-equipamento.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="side-menu">
+        <!-- incluir nome do gestor -->
+        <h2>Olá, gestor!</h2>
+        <div class="menu-items">
+            <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
+            <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
+            <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
+            <a href="{{ url_for('planos') }}">Planos</a>
+        </div>
+    </div>
+    <div class="page-content-container">
+        <div class="page-content">
+            <h1>Cadastre um equipamento</h1>
+            <form id="machine-form" method="post">
+                <div class="machine-field">
+                    <label for="machine-name"><p>Nome:</p></label>
+                    <input type="text" name="nome" id="machine-name" required>
+                </div>
+                <div class="machine-field">
+                    <label for="machine-value"><p>Valor:</p></label>
+                    <input type="number" name="valor" id="machine-value" min="0.01" required>
+                </div>
+                <div class="machine-radio">
+                    <p>Status:</p>
+                    <div class="radio-item">
+                        <input type="radio" id="disponivel" name="status" value="disponivel" required>
+                        <label for="disponivel">Disponível</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="quebrada" name="status" value="quebrada">
+                        <label for="quebrada">Quebrada</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="no-conserto" name="status" value="no_conserto">
+                        <label for="no-conserto">No conserto</label>
+                    </div>
+                </div>
+                <button type="submit" class="machine-submit">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
