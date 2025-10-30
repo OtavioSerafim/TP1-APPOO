@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alunos | Academia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='alunos-gestor.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <!-- menu lateral presente em todas as telas dos usuários -->
+    <div class="side-menu">
+        <!-- incluir nome do gestor -->
+        <h2>Olá, gestor!</h2>
+        <div class="menu-items">
+            <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
+            <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
+            <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
+            <a href="{{ url_for('planos') }}">Planos</a>
+        </div>
+    </div>
+    <div class="page-content-container">
+        <div class="page-content">
+            <h1>Alunos</h1>
+            <div class="tabela">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Cadastro facial</th>
+                            <th>Última entrada</th>
+                            <th>Personal</th>
+                            <th>Plano (?)</th> <!-- se for a ficha, vai ser legal colocar um botão que abre a ficha do aluno -->
+                            <th>Data de início do plano (?)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Germano Marques Cipriano Fagundes</td>
+                            <td>a</td>
+                            <td>27/10/2025</td>
+                            <td>Nome do personal (puxar do back)</td>
+                            <td>001</td>
+                            <td>28/10/2025</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a href="{{ url_for('cadastro-aluno') }}" class="cadastrar">Cadastrar aluno</a>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.tabela').addEventListener('click', (e) => {
+            // Editar status
+            if (e.target.closest('.edit-status')) {
+                const statusCell = e.target.closest('td');
+                statusCell.classList.add('editing');
+            }
+            
+            // Cancelar edição de status
+            if (e.target.closest('.edit-cancel')) {
+                const statusCell = e.target.closest('td');
+                statusCell.classList.remove('editing');
+            }
+
+            // Submissão do formulário de status
+            if (e.target.closest('.machine-submit')) {
+                const form = e.target.closest('.status-form');
+                const selected = form.querySelector('input[name="status"]:checked');
+                if (selected) {
+                    const statusCell = form.closest('td');
+                    statusCell.classList.remove('editing');
+                }
+            }
+
+            // Deletar
+            if (e.target.closest('.delete')) {
+                const deleteCell = e.target.closest('td');
+                deleteCell.classList.add('deleting');
+            }
+
+            // Cancelar deleção
+            if (e.target.closest('.del-no')) {
+                const deleteCell = e.target.closest('td');
+                deleteCell.classList.remove('deleting');
+            }
+        });
+    </script>
+</body>
+</html>

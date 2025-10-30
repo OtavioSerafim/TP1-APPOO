@@ -1,0 +1,125 @@
+body {
+    display: flex;
+    background-color: var(--blue-900);
+}
+
+.side-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    height: 100vh;
+    width: 20vw;
+    padding: 2rem;
+    background-color: var(--blue-100);
+    border-radius: 0 10px 10px 0;
+    position: fixed;
+}
+
+.side-menu h2 {
+    color: var(--blue-600);
+}
+
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: fit-content;
+}
+
+.menu-items a {
+    color: var(--blue-400);
+    transition: all .2s ease;
+}
+
+.menu-items a:hover {
+    color: var(--blue-400-hover);
+}
+
+.page-content-container {
+    width: 100vw;
+}
+
+.page-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    width: calc(80vw - 2rem);
+    height: calc(100vh - 2rem);
+    background-color: var(--blue-100);
+    border-radius: 10px;
+    margin: 1rem;
+    padding: 4rem;
+    right: 0;
+    position: absolute;
+    overflow-y: auto;
+}
+
+.page-content h1 {
+    color: var(--blue-900);
+}
+
+#client-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.client-field, .client-radio, .client-checkbox {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.client-field, .client-submit {
+    background: none;
+    width: fit-content;
+    font-size: 1rem;
+}
+
+.client-field {
+    display: flex;
+    width: 100%;
+}
+
+.client-field input {
+    flex: 1;
+    border: 1px solid var(--blue-900);
+    border-radius: 5px;
+    background: none;
+    height: 3rem;
+    padding: 1rem;
+    max-width: 500px;
+}
+
+.client-field label, .client-radio p, .client-checkbox p {
+    font-weight: 600;
+    
+}
+
+.client-radio,.client-checkbox {
+    display: flex;
+    flex-direction: column;
+}
+
+.client-submit {
+    padding: .8rem 1.5rem;
+    border-radius: 7px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    background-color: var(--blue-400);
+    color: white;
+    transition: all .2s ease;
+}
+
+.client-submit:hover {
+    cursor: pointer;
+    background-color: var(--blue-600);
+}
+
+.client-face {
+    height: 20vh;
+    width: 20vh;
+    background-color: var(--blue-400);
+
+}
