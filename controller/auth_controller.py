@@ -1,6 +1,6 @@
 """Controlador responsável pela autenticação de usuários."""
 
-from flask import g, jsonify, make_response, request
+from flask import g, jsonify, make_response, request, redirect, url_for
 
 from utils.errors.erroAutenticacao import ErroAutenticacao
 from utils.errors.erroConfiguracao import ErroConfiguracao
@@ -42,7 +42,8 @@ class AuthController:
 			secure=False,
 			samesite="Lax",
 		)
-		return response
+		print(response)
+		return redirect(url_for('gestor'))
 
 	@staticmethod
 	def logout():

@@ -39,8 +39,12 @@ class UserController:
         }
         
         try:
-            usuario_model = g.models.usuario
-            user_id = usuario_model.create(data)
+            if tipo_usuario == 'gestor':
+                usuario_model = g.models.gestor
+                user_id = usuario_model.create(data)
+            elif tipo_usuario == 'personal':
+                usuario_model = g.models.personal
+                user_id = usuario_model.create(data)
             flash("Cadastro realizado com sucesso! Faça login para continuar.", "success")
             return redirect(url_for('login'))
         except ErroDadosInvalidos as e:

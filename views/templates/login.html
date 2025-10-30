@@ -15,14 +15,14 @@
     <h1>Seja bem vindo(a)!</h1>
     <div class="login">
         <h2>Login</h2>
-        <form id="login-form">
+        <form id="login-form" method="post" action="{{ url_for('auth_login') }}">
             <div class="login-field">
                 <label for="login-email"><p>E-mail:</p></label>
                 <input type="email" name="email" id="login-email" required>
             </div>
             <div class="login-field">
                 <label for="login-pwd"><p>Senha:</p></label>
-                <input type="password" name="password" id="login-pwd">
+                <input type="password" name="senha" id="login-pwd">
             </div>
             <div class="actions">
                 <button type="submit" class="login-submit">Entrar</button>
