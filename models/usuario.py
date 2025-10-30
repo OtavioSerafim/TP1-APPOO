@@ -79,3 +79,12 @@ class Usuario(Model):
         if isinstance(token, bytes):
             token = token.decode("utf-8")
         return token
+    
+    def read_by_email(self, email):
+        """Consulta um usuário pelo email."""
+        query = (
+            f"SELECT {', '.join(self.columns)} "
+            f"FROM {self.table_name} WHERE email = ?"
+        )
+        self.cursor.execute(query, (email,))
+        return self.cursor.fetchone()
