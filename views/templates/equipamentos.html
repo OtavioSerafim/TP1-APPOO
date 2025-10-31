@@ -13,6 +13,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <script src="{{ url_for('static', filename='scripts/flash-message.js') }}"></script>
+
     <div class="side-menu">
         <!-- incluir nome do gestor -->
         <h2>Olá, gestor!</h2>
@@ -22,6 +35,9 @@
             <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
             <a href="{{ url_for('planos') }}">Planos</a>
         </div>
+        <form method="post" action="{{ url_for('auth_logout') }}">
+            <button type="submit" class="logout">Sair</button>
+        </form>
     </div>
     <div class="page-content-container">
         <div class="page-content">
@@ -40,13 +56,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for linha in equipamentos %}
                         <tr>
-                            <td>1</td>
-                            <td>Leg press 45°</td>
-                            <td>5000,00</td>
+                            <td>{{ linha.id }}</td>
+                            <td>{{ linha.nome }}</td>
+                            <td>{{ linha.valor }}</td>
                             <td>
                                 <div class="editing-title">
-                                    Quebrada
+                                    {{ linha.status }}
                                     <a class="edit-cancel"><i class="fa fa-close"></i></a>
                                     <a class="edit-status"><i class="fa fa-pencil"></i></a>
                                 </div>
@@ -71,8 +88,8 @@
                                     </form>
                                 </div>
                             </td>
-                            <td>26/10/2025</td>
-                            <td>26/10/2025</td>
+                            <td>{{ linha.criado_em }}</td>
+                            <td>{{ linha.atualizado_em }}</td>
                             <td>
                                 <a class="delete"><i class="fa fa-trash-o"></i></a>
                                 <div class="delete-confirm">
@@ -81,47 +98,9 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Leg press 45°</td>
-                            <td>5000,00</td>
-                            <td>
-                                <div class="editing-title">
-                                    Quebrada
-                                    <a class="edit-cancel"><i class="fa fa-close"></i></a>
-                                    <a class="edit-status"><i class="fa fa-pencil"></i></a>
-                                </div>
-                                <div class="status-editor">
-                                    <form class="status-form" action="" method="post">
-                                        <div class="machine-radio">
-                                            <p>Status:</p>
-                                            <div class="radio-item">
-                                                <input type="radio" id="disponivel-2" name="status" value="disponivel" required>
-                                                <label for="disponivel-2">Disponível</label>
-                                            </div>
-                                            <div class="radio-item">
-                                                <input type="radio" id="quebrada-2" name="status" value="quebrada">
-                                                <label for="quebrada-2">Quebrada</label>
-                                            </div>
-                                            <div class="radio-item">
-                                                <input type="radio" id="no-conserto-2" name="status" value="no_conserto">
-                                                <label for="no-conserto-2">No conserto</label>
-                                            </div>
-                                            <button type="submit" class="machine-submit"><i class="fa fa-check"></i></button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </td>
-                            <td>26/10/2025</td>
-                            <td>26/10/2025</td>
-                            <td>
-                                <a class="delete"><i class="fa fa-trash-o"></i></a>
-                                <div class="delete-confirm">
-                                    <button class="del-yes"><i class="fa fa-check"></i></button>
-                                    <button class="del-no"><i class="fa fa-close"></i></button>
-                                </div>
-                            </td>
-                        </tr>
+                        {% else %}
+                        <tr><td colspan="6">Nenhum equipamento cadastrado.</td></tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -166,5 +145,6 @@
             }
         });
     </script>
+    <script src="{{ url_for('static', filename='scripts/processa-logout.js') }}"></script>
 </body>
 </html>

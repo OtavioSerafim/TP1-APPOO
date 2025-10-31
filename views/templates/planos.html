@@ -13,6 +13,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <script src="{{ url_for('static', filename='scripts/flash-message.js') }}"></script>
+
     <!-- menu lateral presente em todas as telas dos usuários -->
     <div class="side-menu">
         <!-- incluir nome do gestor -->
@@ -23,18 +36,22 @@
             <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
             <a href="{{ url_for('planos') }}">Planos</a>
         </div>
+        <form method="post" action="{{ url_for('auth_logout') }}">
+            <button type="submit" class="logout">Sair</button>
+        </form>
     </div>
     <div class="page-content-container">
         <div class="page-content">
             <h1>Planos</h1>
             <div class="plans-cards">
+                {% for linha in planos %}
                 <div class="plan-card">
-                    <h2>Nome do plano</h2>
+                    <h2>{{linha.nome}}</h2>
                     <p>
-                        <strong>Descrição do plano:</strong> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt consequatur voluptates impedit veritatis, aperiam commodi.
+                        <strong>Descrição do plano:</strong> {{linha.descricao}}
                     </p>
-                    <h3>Valor mensal: R$XX,XX</h3>
-                    <h3>Duração: XX meses</h3>
+                    <h3>Valor mensal: R${{linha.valor_mensal}}</h3>
+                    <h3>Duração: {{linha.duracao_meses}} meses</h3>
                     <div class="plan-actions">
                         <button class="plan-edit"><i class="fa fa-pencil"></i></button>
                         <div class="delete-container">
@@ -46,7 +63,11 @@
                         </div>
                     </div>
                 </div>
+                {% else %}
+                <p>Cadastre um plano!</p>
+                {% endfor %}
             </div>
+            <a href="{{ url_for('cadastro-plano') }}" class="cadastrar">Cadastrar plano</a>
         </div>
     </div>
 
@@ -65,5 +86,6 @@
             }
         });
     </script>
+    <script src="{{ url_for('static', filename='scripts/processa-logout.js') }}"></script>
 </body>
 </html>
