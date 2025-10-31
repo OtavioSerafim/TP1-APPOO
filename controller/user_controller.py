@@ -102,8 +102,6 @@ class UserController:
             print(f"Erro ao cadastrar equipamento: {e}")
             flash("Erro ao realizar cadastro. Tente novamente.", "error")
             return redirect(url_for('cadastro-equipamento'))
-
-            
     
     # tela de gerenciamento dos alunos - versão do gestor
     @staticmethod
@@ -122,6 +120,41 @@ class UserController:
     @autenticado
     def planos():
         return render_template('planos.html')
+    
+    #tela de gerenciamento dos planos - exclusiva do gestor
+    @staticmethod
+    @autenticado
+    def cadastro_plano():
+        if request.method == 'GET':
+            return render_template('cadastro-plano.html')
+        
+        # POST: processar adição de plano
+        nome = request.form.get('nome', '').strip()
+        descricao = request.form.get('descricao', '')
+        valor_mensal = request.form.get('valor_mensal', '')
+        duracao_meses = request.form.get('duracao_meses', '')
+
+        # Criar plano
+        data = {
+            'nome': nome,
+            'descricao': descricao,
+            'valor_mensal': valor_mensal,
+            'duracao_meses': duracao_meses
+        }
+
+        try:
+            plano_model = g.models.plano
+            plan_id = plano_model.create(data)
+            flash("Plano cadastrado com sucesso!", "success")
+            return redirect(url_for('cadastro-plano'))
+        except ErroDadosInvalidos as e:
+            flash(str(e), "error")
+            return redirect(url_for('cadastro-plano'))
+        except Exception as e:
+            # Log do erro para debug (em produção, use logging)
+            print(f"Erro ao cadastrar plano: {e}")
+            flash("Erro ao realizar cadastro. Tente novamente.", "error")
+            return redirect(url_for('cadastro-plano'))
     
     #tela de autenticação da entrada dos alunos - exclusiva do gestor
     @staticmethod

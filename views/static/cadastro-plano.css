@@ -1,0 +1,57 @@
+#plan-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.plan-field {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.plan-field, .plan-submit {
+    background: none;
+    width: fit-content;
+    font-size: 1rem;
+}
+
+.plan-field {
+    display: flex;
+    width: 100%;
+}
+
+.plan-field input, .plan-field textarea {
+    flex: 1;
+    border: 1px solid var(--blue-900);
+    border-radius: 5px;
+    background: none;
+    height: 3rem;
+    padding: 1rem;
+    max-width: 500px;
+}
+
+.plan-field textarea {
+    min-height: 6rem;
+    resize: none;
+}
+
+.plan-field label {
+    font-weight: 600;
+}
+
+.plan-submit {
+    padding: .8rem 1.5rem;
+    border-radius: 7px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    background-color: var(--blue-400);
+    color: white;
+    transition: all .2s ease;
+}
+
+.plan-submit:hover {
+    cursor: pointer;
+    background-color: var(--blue-600);
+}
