@@ -33,5 +33,32 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Impede o submit padrão do form
+            
+            const email = document.getElementById('login-email').value;
+            const senha = document.getElementById('login-pwd').value;
+            
+            fetch('/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, senha })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                } else if (data.message) {
+                    alert(data.message); // Mostra mensagem de erro
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Erro ao fazer login. Tente novamente.');
+            });
+        });
+    </script>
 </body>
 </html>

@@ -33,7 +33,7 @@ class AuthController:
 			# Resposta genérica para evitar vazar detalhes sensíveis.
 			return jsonify({"message": "Falha ao autenticar o usuário."}), 500
 
-		response = make_response(jsonify({"message": "Autenticado com sucesso."}))
+		response = make_response(jsonify({"message": "Autenticado com sucesso.", "redirect": url_for('gestor')}))
 		response.set_cookie(
 			"auth_token",
 			token,
@@ -42,13 +42,12 @@ class AuthController:
 			secure=False,
 			samesite="Lax",
 		)
-		print(response)
-		return redirect(url_for('gestor'))
+		return response
 
 	@staticmethod
 	def logout():
 		"""Revoga a sessão removendo o cookie JWT."""
-		response = make_response(jsonify({"message": "Sessão encerrada."}))
+		response = make_response(jsonify({"message": "Sessão encerrada.", "redirect": url_for('login')}))
 		response.delete_cookie("auth_token")
 		return response
 
