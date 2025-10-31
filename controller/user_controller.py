@@ -66,7 +66,9 @@ class UserController:
     @staticmethod
     @autenticado
     def equipamentos():
-        return render_template('equipamentos.html')
+        if request.method == 'GET':
+            equipamentos = g.models.equipamento.listar_todos() # lista equipamentos
+            return render_template('equipamentos.html', equipamentos=equipamentos)
 
     # tela de cadastro de equipamentos - exclusiva do gestor
     @staticmethod
