@@ -37,7 +37,7 @@ app.add_url_rule('/auth/login', 'auth_login', AuthController.login, methods=['PO
 app.add_url_rule('/gestor', 'gestor', UserController.gestor)
 app.add_url_rule('/auth/logout', 'auth_logout', AuthController.logout, methods=['POST'])
 app.add_url_rule('/gestor/equipamentos', 'equipamentos', UserController.equipamentos)
-app.add_url_rule('/gestor/equipamentos/novo', 'cadastro-equipamento', UserController.cadastro_equipamento)
+app.add_url_rule('/gestor/equipamentos/novo', 'cadastro-equipamento', UserController.cadastro_equipamento, methods=['GET', 'POST'])
 app.add_url_rule('/gestor/alunos', 'alunos-gestor', UserController.alunos_gestor)
 app.add_url_rule('/gestor/alunos/novo', 'cadastro-aluno', UserController.cadastro_aluno)
 app.add_url_rule('/gestor/planos', 'planos', UserController.planos)

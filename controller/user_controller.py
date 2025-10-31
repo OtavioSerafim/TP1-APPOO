@@ -72,7 +72,36 @@ class UserController:
     @staticmethod
     @autenticado
     def cadastro_equipamento():
-        return render_template('cadastro-equipamento.html')
+        if request.method == 'GET':
+            return render_template('cadastro-equipamento.html')
+        
+        # POST: processar adição de equipamento
+        nome = request.form.get('nome', '').strip()
+        valor = request.form.get('valor', '')
+        status = request.form.get('status', '')
+
+        # Criar equipamento
+        data = {
+            'nome': nome,
+            'valor': valor,
+            'status': status
+        }
+
+        try:
+            equipamento_model = g.models.equipamento
+            machine_id = equipamento_model.create(data)
+            flash("Equipamento cadastrado com sucesso!", "success")
+            return redirect(url_for('cadastro-equipamento'))
+        except ErroDadosInvalidos as e:
+            flash(str(e), "error")
+            return redirect(url_for('cadastro-equipamento'))
+        except Exception as e:
+            # Log do erro para debug (em produção, use logging)
+            print(f"Erro ao cadastrar equipamento: {e}")
+            flash("Erro ao realizar cadastro. Tente novamente.", "error")
+            return redirect(url_for('cadastro-equipamento'))
+
+            
     
     # tela de gerenciamento dos alunos - versão do gestor
     @staticmethod
