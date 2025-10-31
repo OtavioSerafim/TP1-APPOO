@@ -68,7 +68,7 @@ class Usuario(Model):
             raise ErroConfiguracao("JWT_SECRET não está configurado nas variáveis de ambiente.")
 
         payload = {
-            "sub": user[0],
+            "sub": str(user[0]),
             "nome": user[1],
             "email": user[2],
             "role": user[4],
