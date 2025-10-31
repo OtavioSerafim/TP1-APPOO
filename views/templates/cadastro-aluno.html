@@ -12,9 +12,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <script src="{{ url_for('static', filename='scripts/flash-message.js') }}"></script>
+    
     <div class="side-menu">
-        <!-- incluir nome do gestor -->
-        <h2>Olá, gestor!</h2>
+        <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
         <div class="menu-items">
             <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
             <a href="{{ url_for('autentica-entrada') }}">Entrada</a>

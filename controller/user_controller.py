@@ -60,7 +60,8 @@ class UserController:
     @staticmethod
     @autenticado
     def gestor():
-        return render_template('home-gestor.html')
+        usuario = getattr(g, "current_user", None) # dados do usuário
+        return render_template('home-gestor.html', usuario=usuario)
     
     # tela de gestão e visualização de equipamentos - exclusiva do gestor
     @staticmethod
@@ -68,15 +69,17 @@ class UserController:
     def equipamentos():
         if request.method == 'GET':
             equipamentos = g.models.equipamento.get_all() # lista equipamentos
-            return render_template('equipamentos.html', equipamentos=equipamentos)
+            usuario = getattr(g, "current_user", None) # dados do usuário
+            return render_template('equipamentos.html', equipamentos=equipamentos, usuario=usuario)
 
     # tela de cadastro de equipamentos - exclusiva do gestor
     @staticmethod
     @autenticado
     def cadastro_equipamento():
         if request.method == 'GET':
-            return render_template('cadastro-equipamento.html')
-        
+            usuario = getattr(g, "current_user", None) # dados do usuário
+            return render_template('cadastro-equipamento.html', usuario=usuario)
+
         # POST: processar adição de equipamento
         nome = request.form.get('nome', '').strip()
         valor = request.form.get('valor', '')
@@ -107,21 +110,24 @@ class UserController:
     @staticmethod
     @autenticado
     def alunos_gestor():
-        return render_template('alunos-gestor.html')
+        usuario = getattr(g, "current_user", None) # dados do usuário
+        return render_template('alunos-gestor.html', usuario=usuario)
     
     #tela de cadastro de alunos - exclusiva do gestor
     @staticmethod
     @autenticado
     def cadastro_aluno():
-        return render_template('cadastro-aluno.html')
+        usuario = getattr(g, "current_user", None) # dados do usuário
+        return render_template('cadastro-aluno.html', usuario=usuario)
     
     #tela de gerenciamento dos planos - exclusiva do gestor
     @staticmethod
     @autenticado
     def planos():
         if request.method == 'GET':
+            usuario = getattr(g, "current_user", None) # dados do usuário
             planos = g.models.plano.get_all() # lista planos
-            return render_template('planos.html', planos=planos)
+            return render_template('planos.html', planos=planos, usuario=usuario)
 
     
     #tela de gerenciamento dos planos - exclusiva do gestor
@@ -129,7 +135,8 @@ class UserController:
     @autenticado
     def cadastro_plano():
         if request.method == 'GET':
-            return render_template('cadastro-plano.html')
+            usuario = getattr(g, "current_user", None) # dados do usuário
+            return render_template('cadastro-plano.html', usuario=usuario)
         
         # POST: processar adição de plano
         nome = request.form.get('nome', '').strip()
