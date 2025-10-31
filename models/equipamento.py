@@ -62,15 +62,6 @@ class Equipamento(Model):
         )
         self.cursor.execute(query, (self.STATUS_DISPONIVEL,))
         return self.cursor.fetchall()
-    
-    def listar_todos(self):
-        """Retorna todos os equipamentos cadastrados."""
-        query = (
-            f"SELECT {', '.join(self.columns)} "
-            f"FROM {self.table_name} ORDER BY id DESC"
-        )
-        self.cursor.execute(query)
-        return self.cursor.fetchall()
 
     def atualizar_status(self, equipamento_id, novo_status):
         """Facilita a troca de status garantindo validação."""

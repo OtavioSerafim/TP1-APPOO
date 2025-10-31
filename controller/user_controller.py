@@ -67,7 +67,7 @@ class UserController:
     @autenticado
     def equipamentos():
         if request.method == 'GET':
-            equipamentos = g.models.equipamento.listar_todos() # lista equipamentos
+            equipamentos = g.models.equipamento.get_all() # lista equipamentos
             return render_template('equipamentos.html', equipamentos=equipamentos)
 
     # tela de cadastro de equipamentos - exclusiva do gestor
@@ -119,7 +119,10 @@ class UserController:
     @staticmethod
     @autenticado
     def planos():
-        return render_template('planos.html')
+        if request.method == 'GET':
+            planos = g.models.plano.get_all() # lista planos
+            return render_template('planos.html', planos=planos)
+
     
     #tela de gerenciamento dos planos - exclusiva do gestor
     @staticmethod
