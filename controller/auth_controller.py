@@ -1,5 +1,6 @@
 """Controlador responsável pela autenticação de usuários."""
-
+import jwt
+import os
 from flask import g, jsonify, make_response, request, redirect, url_for
 
 from utils.errors.erroAutenticacao import ErroAutenticacao
@@ -32,8 +33,16 @@ class AuthController:
 		except Exception:
 			# Resposta genérica para evitar vazar detalhes sensíveis.
 			return jsonify({"message": "Falha ao autenticar o usuário."}), 500
+		
+		secret = os.getenv("JWT_SECRET")
+		decoded = jwt.decode(token, secret, algorithms=["HS256"])
+		role = decoded["role"]
 
-		response = make_response(jsonify({"message": "Autenticado com sucesso.", "redirect": url_for('gestor')}))
+		if role == "gestor":
+			response = make_response(jsonify({"message": "Autenticado com sucesso.", "redirect": url_for('gestor')}))
+		if role == "personal":
+			response = make_response(jsonify({"message": "Autenticado com sucesso.", "redirect": url_for('personal')}))
+			
 		response.set_cookie(
 			"auth_token",
 			token,
