@@ -103,3 +103,20 @@
 .delete-container.deleting .delete {
     display: none;
 }
+
+.cadastrar {
+    width: fit-content;
+    padding: .8rem 1.5rem;
+    border-radius: 7px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    background-color: var(--blue-400);
+    color: white;
+    transition: all .2s ease;
+}
+
+.cadastrar:hover {
+    cursor: pointer;
+    background-color: var(--blue-600);
+}
