@@ -1,175 +1,237 @@
 .tabela {
-    max-height: 60vh;
-    overflow: auto;
-    border-radius: 5px;
+	max-height: 60vh;
+	overflow: auto;
+	border-radius: 5px;
 }
 
 .page-content table {
-    background-color: rgba(0, 0, 0, 1);
-    border-radius: 5px;
-    table-layout: fixed;
-    width: 100%;
-    border-collapse: collapse;
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: auto;
+	background-color: transparent;
 }
 
-.page-content table thead, .page-content table tbody, .page-content table tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
+.page-content table thead th {
+	background-color: var(--blue-600);
+	color: #fff;
 }
 
-.page-content table th {
-    background-color: var(--blue-600);
-    color: white;
-}
-
-.page-content table th, .page-content table td {
-    width: calc(100%/6);
-    padding: 5px;
-    border: none;
-}
-
+.page-content table th,
 .page-content table td {
-    color: var(--blue-900);
-    background-color: var(--blue-50);
-    text-align: center;
+	padding: 0.75rem 1rem;
+	border: none;
+	text-align: center;
 }
 
-.page-content table tr:nth-child(odd) td {
-    background-color: var(--blue-100);
+.page-content table tbody td {
+	color: var(--blue-900);
 }
 
-.page-content table td a {
-    color: var(--blue-500);
-    margin-left: .5rem;
+.page-content table tbody tr:nth-child(odd) td {
+	background-color: var(--blue-100);
 }
 
-.page-content table td button {
-    height: 2rem;
-    aspect-ratio: 1/1;
-    padding: .3rem;
-    border-radius: 7px;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    color: white;
-    background-color: var(--blue-500);
-    transition: all .2s ease;
+.page-content table tbody tr:nth-child(even) td {
+	background-color: var(--blue-50);
 }
 
-.page-content table td button:hover i {
-    color: white !important;
+.page-content table th:last-child,
+.page-content table td:last-child {
+	width: 180px;
+	white-space: nowrap;
 }
 
-.page-content table td button.del-yes:hover {
-    cursor: pointer;
-    background-color: green;
+.status-label {
+	text-transform: capitalize;
 }
 
-.page-content table td button.del-no:hover {
-    cursor: pointer;
-    background-color: rgb(187, 0, 0);
+.table-actions {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.6rem;
 }
 
-.page-content table td a i, .page-content table td button i {
-    transition: all 0.2s ease;
+.table-actions button {
+	border: none;
+	border-radius: 8px;
+	padding: 0.45rem 0.75rem;
+	font-size: 1rem;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
 }
 
-.page-content table td a:hover i, .page-content table td button:hover i {
-    transform: scale(1.2);
-    color: var(--blue-900);
-    cursor: pointer;
+.table-actions button i {
+	pointer-events: none;
+}
+
+.table-actions .equipment-edit {
+	background-color: var(--blue-500);
+}
+
+.table-actions .equipment-edit:hover {
+	background-color: var(--blue-700);
+	transform: translateY(-1px);
+	cursor: pointer;
+}
+
+.table-actions .equipment-delete {
+	background-color: #d64545;
+}
+
+.table-actions .equipment-delete:hover {
+	background-color: #a93232;
+	transform: translateY(-1px);
+	cursor: pointer;
 }
 
 .cadastrar {
-    width: fit-content;
-    padding: .8rem 1.5rem;
-    border-radius: 7px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border: none;
-    background-color: var(--blue-400);
-    color: white;
-    transition: all .2s ease;
+	width: fit-content;
+	padding: 0.8rem 1.5rem;
+	border-radius: 7px;
+	font-size: 1.2rem;
+	font-weight: bold;
+	border: none;
+	background-color: var(--blue-400);
+	color: white;
+	transition: all 0.2s ease;
 }
 
 .cadastrar:hover {
-    cursor: pointer;
-    background-color: var(--blue-600);
+	cursor: pointer;
+	background-color: var(--blue-600);
 }
 
-.editing-title {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+.equipment-popup-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(1, 8, 27, 0.55);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+	z-index: 1000;
 }
 
-td.editing .status-editor {
-    max-height: unset;
-    padding: 1rem;
-    margin-top: .5rem;
+.equipment-popup-overlay.active {
+	display: flex;
 }
 
-td.editing .edit-status {
-    display: none;
+.equipment-popup {
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 18px 40px rgba(1, 8, 27, 0.25);
+	padding: 2rem;
+	width: min(90vw, 520px);
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
 }
 
-td .edit-cancel {
-    display: none;
-    width: fit-content;
+.equipment-popup h2 {
+	margin: 0;
+	color: var(--blue-500);
 }
 
-td.editing .edit-cancel {
-    display: block;
+.equipment-popup p {
+	margin: 0;
+	color: var(--blue-600);
 }
 
-.status-editor {
-    max-height: 0;
-    overflow: hidden;
-    background-color: #032c7d17;
-    border-radius: 7px;
-    transition: all .2s ease-in-out;
+.equipment-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 }
 
-.machine-radio {
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
+.equipment-field label {
+	font-weight: 600;
+	color: var(--blue-500);
+}
+
+.equipment-field input {
+	border: 1px solid var(--blue-200);
+	border-radius: 8px;
+	padding: 0.75rem 1rem;
+	font-size: 1rem;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.equipment-field input:focus {
+	outline: none;
+	border-color: var(--blue-500);
+	box-shadow: 0 0 0 3px rgba(13, 78, 204, 0.15);
+}
+
+.equipment-radio {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.equipment-radio p {
+	margin: 0;
+	font-weight: 600;
+	color: var(--blue-500);
 }
 
 .radio-item {
-    text-align: left;
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	color: var(--blue-600);
 }
 
-.radio-item, .machine-submit {
-    width: fit-content;
+.popup-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 1rem;
 }
 
-.delete-confirm {
-    max-height: 0;
-    overflow: hidden;
-    transition: all .2s ease-in-out;
+.popup-close {
+	border: none;
+	background: none;
+	color: var(--blue-500);
+	font-weight: 600;
+	cursor: pointer;
+	padding: 0.6rem 1rem;
+	border-radius: 7px;
+	transition: color 0.2s ease, background-color 0.2s ease;
 }
 
-td.deleting .delete-confirm {
-    max-height: unset;
+.popup-close:hover {
+	color: var(--blue-900);
+	background-color: rgba(1, 8, 27, 0.05);
 }
 
-td.deleting .delete {
-    display: none;
+.popup-primary,
+.popup-danger {
+	border: none;
+	border-radius: 7px;
+	padding: 0.75rem 1.5rem;
+	font-weight: 600;
+	color: #fff;
+	cursor: pointer;
+	transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.machine-submit {
-    padding: .4rem;
-    border-radius: 7px;
-    border: none;
-    background-color: var(--blue-400);
-    color: white;
-    transition: all .2s ease;
-    align-self: center;
+.popup-primary {
+	background-color: var(--blue-500);
 }
 
-.machine-submit:hover {
-    cursor: pointer;
-    background-color: var(--blue-600);
+.popup-primary:hover {
+	background-color: var(--blue-600);
+	transform: translateY(-1px);
+}
+
+.popup-danger {
+	background-color: #d64545;
+}
+
+.popup-danger:hover {
+	background-color: #a93232;
+	transform: translateY(-1px);
 }
