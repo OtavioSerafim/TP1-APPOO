@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Equipamento | Academia</title>
+    <title>Gestor | Academia</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='cadastro-equipamento.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fichas-gestor.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <div class="flash-container">
@@ -28,7 +29,6 @@
     <div class="side-menu">
         <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
         <div class="menu-items">
-            <a href="{{ url_for('gestor') }}">Início</a>
             <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
             <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
             <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
@@ -41,38 +41,41 @@
     </div>
     <div class="page-content-container">
         <div class="page-content">
-            <h1>Cadastre um equipamento</h1>
-            <form id="machine-form" method="post">
-                <!-- nome do equipamento -->
-                <div class="machine-field">
-                    <label for="machine-name"><p>Nome:</p></label>
-                    <input type="text" name="nome" id="machine-name" required>
-                </div>
-                <!-- valor do equipamento -->
-                <div class="machine-field">
-                    <label for="machine-value"><p>Valor:</p></label>
-                    <input type="number" name="valor" id="machine-value" min="1" required>
-                </div>
-                <!-- status do equipamento -->
-                <div class="machine-radio">
-                    <p>Status:</p>
-                    <div class="radio-item">
-                        <input type="radio" id="disponivel" name="status" value="disponivel" required>
-                        <label for="disponivel">Disponível</label>
+            <h1>Fichas</h1>
+            <div class="fichas">
+                <a href="#" class="ficha">
+                    <div class="ficha-nomes">
+                        <h3>Nome do aluno</h3>
+                        <p>Nome do treinador</p>
                     </div>
-                    <div class="radio-item">
-                        <input type="radio" id="quebrada" name="status" value="quebrada">
-                        <label for="quebrada">Quebrada</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="no-conserto" name="status" value="no_conserto">
-                        <label for="no-conserto">No conserto</label>
-                    </div>
-                </div>
-                <button type="submit" class="machine-submit">Cadastrar</button>
-            </form>
+                    <i class="material-icons">keyboard_arrow_right</i>
+                </a>
+            </div>
+            <a href="{{ url_for('cadastro-ficha') }}" class="cadastrar">Criar ficha</a>
         </div>
     </div>
+
+    <div class="ficha-detalhes-container" id="ficha-popup">
+        <div class="ficha-detalhes">
+            <h1>Nome do aluno</h1>
+            <h2>Nome do treinador</h2>
+            <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque id architecto aliquid asperiores unde iusto inventore, incidunt beatae obcaecati eligendi esse dolor similique fugiat officia, cumque voluptas. Accusamus, neque debitis!
+            </p>
+            <div class="exercicios">
+                <h2>Exercícios</h2>
+                <ul>
+                    <li>Exercicio 1</li>
+                    <li>Exercicio 2</li>
+                    <li>Exercicio 3</li>
+                    <li>Exercicio 4</li>
+                    <li>Exercicio 5</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts/ficha-popup.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/processa-logout.js') }}"></script>
 </body>
 </html>

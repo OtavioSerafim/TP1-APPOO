@@ -53,6 +53,16 @@ class Personal(Usuario):
 		personal_payload['id'] = usuario_id
 		self._personal_model.create(personal_payload)
 		return usuario_id
+	
+	def get_all(self):
+		"""Sobrescreve get_all para filtrar apenas personal trainers."""
+		query = (
+			f"SELECT id, nome, email FROM usuarios "
+            f"WHERE tipo_usuario = 'personal' "
+            f"ORDER BY nome"
+        )
+		self.cursor.execute(query)
+		return [{'id': r[0], 'nome': r[1], 'email': r[2]} for r in self.cursor.fetchall()]
 
 	def read(self, usuario_id):
 		"""Consulta dados do usuário e complementos do personal."""

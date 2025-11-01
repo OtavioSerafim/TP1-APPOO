@@ -13,16 +13,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <!-- menu lateral presente em todas as telas dos usuários -->
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <script src="{{ url_for('static', filename='scripts/flash-message.js') }}"></script>
+    
     <div class="side-menu">
-        <!-- incluir nome do gestor -->
-        <h2>Olá, gestor!</h2>
+        <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
         <div class="menu-items">
             <a href="{{ url_for('gestor') }}">Início</a>
             <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
             <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
             <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
             <a href="{{ url_for('planos') }}">Planos</a>
+            <a href="{{ url_for('fichas-gestor') }}">Fichas</a>
         </div>
         <form method="post" action="{{ url_for('auth_logout') }}">
             <button type="submit" class="logout">Sair</button>
@@ -35,25 +47,25 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Nome</th>
-                            <th>Cadastro facial</th>
-                            <th>Última entrada</th>
                             <th>Personal</th>
-                            <th>Plano (?)</th> <!-- se for a ficha, vai ser legal colocar um botão que abre a ficha do aluno -->
-                            <th>Data de início do plano (?)</th>
+                            <th>Plano</th>
+                            <th>Última entrada</th>
+                            <th>Data de início do plano</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for aluno in alunos %}
                         <tr>
-                            <td>1</td>
-                            <td>Germano Marques Cipriano Fagundes</td>
-                            <td>a</td>
-                            <td>27/10/2025</td>
-                            <td>Nome do personal (puxar do back)</td>
-                            <td>001</td>
-                            <td>28/10/2025</td>
+                            <td>{{ aluno.nome }}</td>
+                            <td>Nome do personal</td>
+                            <td>Nome do plano</td>
+                            <td>{{ aluno.data_ultima_entrada }}</td>
+                            <td>{{ aluno.plano_data_inicio }}</td>
                         </tr>
+                        {% else %}
+                        <tr><td colspan="5">Nenhum aluno cadastrado.</td></tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

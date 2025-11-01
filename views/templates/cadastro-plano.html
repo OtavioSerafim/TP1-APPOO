@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Equipamento | Academia</title>
+    <title>Cadastro de Plano | Academia</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='cadastro-plano.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,14 +26,14 @@
     <script src="{{ url_for('static', filename='scripts/flash-message.js') }}"></script>
 
     <div class="side-menu">
-        <!-- incluir nome do gestor -->
-        <h2>Olá, gestor!</h2>
+        <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
         <div class="menu-items">
             <a href="{{ url_for('gestor') }}">Início</a>
             <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
             <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
             <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
             <a href="{{ url_for('planos') }}">Planos</a>
+            <a href="{{ url_for('fichas-gestor') }}">Fichas</a>
         </div>
         <form method="post" action="{{ url_for('auth_logout') }}">
             <button type="submit" class="logout">Sair</button>
@@ -56,12 +56,12 @@
                 <!-- valor do plano -->
                 <div class="plan-field">
                     <label for="plan-value"><p>Valor:</p></label>
-                    <input type="number" name="valor_mensal" id="plan-value" min="1" required>
+                    <input type="number" name="valor_mensal" id="plan-value" step="any" min="0.01" required>
                 </div>
                 <!-- duração (meses) do plano -->
                 <div class="plan-field">
                     <label for="plan-duration"><p>Duração (meses):</p></label>
-                    <input type="number" name="duracao_meses" id="plan-duration" min="1" required>
+                    <input type="number" name="duracao_meses" id="plan-duration" step="1" min="1" required>
                 </div>
                 <button type="submit" class="plan-submit">Cadastrar</button>
             </form>
