@@ -29,6 +29,7 @@ A aplicação adota uma separação clara de responsabilidades:
 ### 📚 Documentação complementar
 - [Visão rápida dos models](docs/models.md)
 - [Resumo do banco de dados](docs/database.md)
+- [Catálogo de erros personalizados](docs/erros.md)
 
 ### Contexto de modelos compartilhado
 O arquivo `models/main.py` define a classe `Models`, responsável por abrir uma única conexão SQLite por requisição e expor instâncias de cada modelo (usuários, alunos, planos, equipamentos etc.). Essa conexão é criada em `@app.before_request` e encerrada em `@app.teardown_request`, garantindo encapsulamento e evitando vazamento de recursos.
