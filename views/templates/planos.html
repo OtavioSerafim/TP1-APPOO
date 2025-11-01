@@ -47,21 +47,32 @@
             <div class="plans-cards">
                 {% for linha in planos %}
                 <div class="plan-card">
-                    <h2>{{linha.nome}}</h2>
+                    <h2>{{ linha.nome }}</h2>
                     <p>
-                        <strong>Descrição do plano:</strong> {{linha.descricao}}
+                        <strong>Descrição do plano:</strong> {{ linha.descricao or 'Sem descrição.' }}
                     </p>
-                    <h3>Valor mensal: R${{linha.valor_mensal}}</h3>
-                    <h3>Duração: {{linha.duracao_meses}} meses</h3>
+                    <h3>Valor mensal: R${{ '%.2f' % (linha.valor_mensal|float) if linha.valor_mensal is not none else '0,00' }}</h3>
+                    <h3>Duração: {{ linha.duracao_meses }} meses</h3>
                     <div class="plan-actions">
-                        <button class="plan-edit"><i class="fa fa-pencil"></i></button>
-                        <div class="delete-container">
-                            <a class="delete"><i class="fa fa-trash-o"></i></a>
-                            <div class="delete-confirm">
-                                <button class="del-yes"><i class="fa fa-check"></i></button>
-                                <button class="del-no"><i class="fa fa-close"></i></button>
-                            </div>
-                        </div>
+                        <button
+                            type="button"
+                            class="plan-edit"
+                            data-id="{{ linha.id }}"
+                            data-nome="{{ linha.nome|e }}"
+                            data-descricao="{{ (linha.descricao or '')|e }}"
+                            data-valor="{{ '%.2f' % (linha.valor_mensal|float) if linha.valor_mensal is not none else '' }}"
+                            data-duracao="{{ linha.duracao_meses }}"
+                        >
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="plan-delete"
+                            data-id="{{ linha.id }}"
+                            data-nome="{{ linha.nome|e }}"
+                        >
+                            <i class="fa fa-trash-o"></i>
+                        </button>
                     </div>
                 </div>
                 {% else %}
@@ -72,21 +83,48 @@
         </div>
     </div>
 
-    <script>
-        document.querySelector('.plan-actions').addEventListener('click', (e) => {
-            // Deletar plano
-            if (e.target.closest('.delete')) {
-                const deleteDiv = e.target.closest('.delete-container');
-                deleteDiv.classList.add('deleting');
-            }
+    <div class="plan-popup-overlay" id="plan-edit-popup">
+        <div class="plan-popup">
+            <h2>Editar plano</h2>
+            <form id="plan-edit-form" method="post" data-update-action-template="{{ url_for('atualizar_plano', plano_id=0) }}">
+                <div class="plan-field">
+                    <label for="edit-plan-name"><p>Nome:</p></label>
+                    <input type="text" name="nome" id="edit-plan-name" required>
+                </div>
+                <div class="plan-field">
+                    <label for="edit-plan-desc"><p>Descrição:</p></label>
+                    <textarea name="descricao" id="edit-plan-desc"></textarea>
+                </div>
+                <div class="plan-field">
+                    <label for="edit-plan-value"><p>Valor:</p></label>
+                    <input type="number" name="valor_mensal" id="edit-plan-value" step="any" min="0.01" required>
+                </div>
+                <div class="plan-field">
+                    <label for="edit-plan-duration"><p>Duração (meses):</p></label>
+                    <input type="number" name="duracao_meses" id="edit-plan-duration" step="1" min="1" required>
+                </div>
+                <div class="popup-actions">
+                    <button type="button" class="popup-close">Cancelar</button>
+                    <button type="submit" class="popup-primary">Salvar alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-            // Cancelar deleção
-            if (e.target.closest('.del-no')) {
-                const deleteDiv = e.target.closest('.delete-container');
-                deleteDiv.classList.remove('deleting');
-            }
-        });
-    </script>
+    <div class="plan-popup-overlay" id="plan-delete-popup">
+        <div class="plan-popup plan-popup--confirm">
+            <h2>Remover plano</h2>
+            <p>Tem certeza que deseja remover o plano <strong id="plan-delete-name"></strong>?</p>
+            <form id="plan-delete-form" method="post" data-delete-action-template="{{ url_for('remover_plano', plano_id=0) }}">
+                <div class="popup-actions">
+                    <button type="button" class="popup-close">Cancelar</button>
+                    <button type="submit" class="popup-danger">Remover</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts/planos.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/processa-logout.js') }}"></script>
 </body>
 </html>
