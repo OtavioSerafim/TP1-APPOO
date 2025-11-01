@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, g
+from flask import render_template, request, redirect, url_for, flash, g, current_app
 
 from utils.decorators.Autenticado import autenticado
 from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
@@ -60,6 +60,20 @@ class UserController:
     @staticmethod
     @autenticado
     def gestor():
+        if request.method == 'POST':
+            capacidade_raw = request.form.get('capacidade_maxima', '').strip()
+            try:
+                capacidade_valor = int(capacidade_raw)
+                if capacidade_valor <= 0:
+                    raise ValueError
+            except ValueError:
+                flash('Informe um número inteiro positivo para a capacidade máxima.', 'error')
+                return redirect(url_for('gestor'))
+
+            current_app.config['ACADEMIA_CAPACIDADE_MAXIMA'] = capacidade_valor
+            flash('Capacidade máxima atualizada com sucesso!', 'success')
+            return redirect(url_for('gestor'))
+
         usuario = getattr(g, "current_user", None) # dados do usuário
         return render_template('home-gestor.html', usuario=usuario)
     

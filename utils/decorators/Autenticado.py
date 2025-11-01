@@ -40,7 +40,13 @@ def autenticado(view_func: F) -> F:
 			raise ErroAutenticacao("Sessão inválida. Faça login novamente.")
 
 		usuario_model = g.models.usuario
-		usuario = usuario_model.read(payload.get("sub"))
+		subject = payload.get("sub")
+		try:
+			usuario_id = int(subject)
+		except (TypeError, ValueError):
+			g.auth_error_clear_cookie = True
+			raise ErroAutenticacao("Sessão inválida. Faça login novamente.")
+		usuario = usuario_model.read(usuario_id)
 		if usuario is None:
 			g.auth_error_clear_cookie = True
 			raise ErroAutenticacao("Usuário não encontrado.")

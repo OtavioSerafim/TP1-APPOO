@@ -23,11 +23,23 @@
             {% endif %}
         {% endwith %}
     </div>
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
     <script src="{{ url_for('static', filename='scripts/flash-message.js') }}"></script>
 
     <div class="side-menu">
         <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
         <div class="menu-items">
+            <a href="{{ url_for('gestor') }}">Início</a>
             <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
             <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
             <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
@@ -38,10 +50,47 @@
             <button type="submit" class="logout">Sair</button>
         </form>
     </div>
-    <div class="instruction">
-        <h2>Escolha um item no menu à esquerda</h2>
+    <div class="page-content-container">
+        <div class="page-content gestor-dashboard">
+            <h1>Painel do Gestor</h1>
+
+            <div class="dashboard-metrics">
+                <div class="dashboard-card">
+                    <span class="metric-label">Alunos presentes</span>
+                    <span class="metric-value">{{ alunos_na_academia }}</span>
+                    <span class="metric-description">Contagem em tempo real será adicionada em breve.</span>
+                </div>
+                <div class="dashboard-card">
+                    <span class="metric-label">Capacidade máxima</span>
+                    <span class="metric-value">{{ capacidade_maxima_academia }}</span>
+                    {% set vagas_disponiveis = capacidade_maxima_academia - alunos_na_academia %}
+                    <span class="metric-description">Vagas disponíveis: {{ 0 if vagas_disponiveis < 0 else vagas_disponiveis }}</span>
+                </div>
+            </div>
+
+            <section class="capacity-form-section">
+                <h2>Definir capacidade máxima</h2>
+                <p class="section-intro">Atualize o limite de pessoas na academia conforme a demanda diária.</p>
+                <form method="post" class="capacity-form">
+                    <label for="capacidade_maxima">Capacidade máxima permitida</label>
+                    <div class="input-group">
+                        <input
+                            type="number"
+                            id="capacidade_maxima"
+                            name="capacidade_maxima"
+                            min="1"
+                            value="{{ capacidade_maxima_academia }}"
+                            required
+                        >
+                        <button type="submit">Salvar</button>
+                    </div>
+                    <p class="capacity-hint">Ajuste esse valor para controlar a lotação e manter a experiência dos alunos.</p>
+                </form>
+            </section>
+        </div>
     </div>
 
+    <script src="{{ url_for('static', filename='scripts/flash-message.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/processa-logout.js') }}"></script>
 </body>
 </html>
