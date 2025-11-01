@@ -1,0 +1,233 @@
+.entrada-page {
+	display: flex;
+	flex-direction: column;
+	gap: 3rem;
+	background-color: var(--blue-100);
+	border-radius: 10px;
+	padding: 3rem;
+	box-shadow: 0 20px 40px -25px rgba(1, 8, 27, 0.6);
+}
+
+.entrada-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 2rem;
+}
+
+.entrada-header h1 {
+	color: var(--blue-900);
+}
+
+.entrada-header .intro {
+	font-family: 'Raleway', sans-serif;
+	font-size: 1rem;
+	color: rgba(1, 8, 27, 0.7);
+	margin-top: .5rem;
+}
+
+.lotacao {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	background: linear-gradient(145deg, var(--blue-50), #ffffff);
+	padding: 1.5rem 2rem;
+	border-radius: 12px;
+	box-shadow: 0 18px 35px -25px rgba(1, 8, 27, 0.55);
+}
+
+.lotacao-label {
+	font-family: 'Raleway', sans-serif;
+	font-size: .9rem;
+	letter-spacing: .05em;
+	color: var(--blue-600);
+	text-transform: uppercase;
+}
+
+.lotacao-valor {
+	margin-top: .5rem;
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: var(--blue-500);
+}
+
+.entrada-form {
+	background-color: var(--blue-50);
+	padding: 2.5rem;
+	border-radius: 12px;
+	box-shadow: 0 16px 30px -24px rgba(1, 8, 27, 0.6);
+}
+
+.busca-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.busca-form label {
+	font-family: 'Raleway', sans-serif;
+	font-size: 1rem;
+	color: var(--blue-900);
+}
+
+.busca-grupo {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.busca-grupo input[type="text"] {
+	flex: 1;
+	min-width: 240px;
+	padding: 1rem 1.3rem;
+	border-radius: 10px;
+	border: 2px solid transparent;
+	font-size: 1.05rem;
+	color: var(--blue-900);
+	background-color: #ffffff;
+	transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.busca-grupo input[type="text"]:focus {
+	outline: none;
+	border-color: var(--blue-400);
+	box-shadow: 0 0 0 4px rgba(29, 151, 241, 0.2);
+}
+
+.busca-grupo button,
+.btn-registrar,
+.btn-saida {
+	padding: .9rem 2rem;
+	border-radius: 10px;
+	border: none;
+	font-size: 1rem;
+	font-weight: 600;
+	letter-spacing: .03em;
+	color: #fff;
+	background: linear-gradient(135deg, var(--blue-400), var(--blue-600));
+	cursor: pointer;
+	transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.busca-grupo button:hover,
+.btn-registrar:hover,
+.btn-saida:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 12px 24px -18px var(--blue-500);
+}
+
+.resultado-busca,
+.presentes {
+	background-color: var(--blue-50);
+	border-radius: 12px;
+	padding: 2.5rem;
+	box-shadow: 0 16px 30px -24px rgba(1, 8, 27, 0.6);
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.resultado-cabecalho,
+.presentes-cabecalho {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+}
+
+.resultado-cabecalho h2,
+.presentes-cabecalho h2 {
+	color: var(--blue-600);
+}
+
+.quantidade {
+	font-family: 'Raleway', sans-serif;
+	font-size: .95rem;
+	color: rgba(1, 8, 27, 0.65);
+}
+
+.lista-resultados,
+.lista-presentes {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.card-resultado,
+.card-presenca {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1.5rem;
+	padding: 1.5rem;
+	border-radius: 12px;
+	background-color: #ffffff;
+	box-shadow: 0 12px 24px -20px rgba(1, 8, 27, 0.5);
+}
+
+.detalhes {
+	display: flex;
+	flex-direction: column;
+	gap: .3rem;
+}
+
+.detalhes strong {
+	color: var(--blue-600);
+	font-size: 1.2rem;
+}
+
+.detalhes span {
+	font-family: 'Raleway', sans-serif;
+	color: rgba(1, 8, 27, 0.7);
+}
+
+.detalhes small {
+	font-family: 'Raleway', sans-serif;
+	color: rgba(1, 8, 27, 0.55);
+}
+
+.nenhum-resultado,
+.nenhum-presente {
+	font-family: 'Raleway', sans-serif;
+	color: rgba(1, 8, 27, 0.7);
+}
+
+.btn-saida {
+	background: linear-gradient(135deg, #f05f57, #c81d25);
+}
+
+.btn-saida:hover {
+	box-shadow: 0 12px 24px -18px rgba(200, 29, 37, 0.6);
+}
+
+@media (max-width: 960px) {
+	body {
+		flex-direction: column;
+	}
+
+	.entrada-header {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.lotacao {
+		align-items: flex-start;
+	}
+
+	.card-resultado,
+	.card-presenca {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.busca-grupo {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.busca-grupo button,
+	.btn-registrar,
+	.btn-saida {
+		width: 100%;
+	}
+}
