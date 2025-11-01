@@ -65,6 +65,24 @@ class Aluno(Usuario):
         self._aluno_model.create(aluno_payload)
         return usuario_id
 
+    def get_all(self):
+        """Retorna todos os alunos com seus dados completos (usuário + aluno)."""
+        query = """
+        SELECT 
+            u.id, u.nome, u.email,
+            a.personal_id, a.plano_id, a.plano_data_inicio,
+            strftime('%Y-%m-%d às %H:%M', a.data_ultima_entrada) AS data_ultima_entrada,
+            p.nome AS plano_nome
+        FROM usuarios u
+        INNER JOIN alunos a ON u.id = a.id
+        LEFT JOIN planos p ON a.plano_id = p.id
+        WHERE u.tipo_usuario = 'aluno'
+        ORDER BY u.nome
+        """
+        self.cursor.execute(query)
+        cols = [col[0] for col in self.cursor.description]
+        return [dict(zip(cols, row)) for row in self.cursor.fetchall()]
+
     def read(self, usuario_id):
         """Consulta dados do usuário e complementos do aluno."""
         usuario = super().read(usuario_id)

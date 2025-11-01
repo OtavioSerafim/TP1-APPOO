@@ -1,0 +1,11 @@
+.instruction {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+    height: 100vh;
+}
+
+.instruction h2 {
+    color: rgba(255, 255, 255, .5);
+}

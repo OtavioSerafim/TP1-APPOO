@@ -111,16 +111,54 @@ class UserController:
     @autenticado
     def alunos_gestor():
         usuario = getattr(g, "current_user", None) # dados do usuário
-        return render_template('alunos-gestor.html', usuario=usuario)
+        alunos = g.models.aluno.get_all() # lista planos
+        return render_template('alunos-gestor.html', usuario=usuario, alunos=alunos)
     
-    #tela de cadastro de alunos - exclusiva do gestor
+    # tela de cadastro de alunos - exclusiva do gestor
     @staticmethod
     @autenticado
     def cadastro_aluno():
-        usuario = getattr(g, "current_user", None) # dados do usuário
-        return render_template('cadastro-aluno.html', usuario=usuario)
+        if request.method == 'GET':
+            usuario = getattr(g, "current_user", None) # dados do usuário
+            planos = g.models.plano.get_all() # lista planos
+            personals = g.models.personal.get_all() # lista personal trainers
+            return render_template('cadastro-aluno.html', usuario=usuario, planos=planos, personals=personals)
     
-    #tela de gerenciamento dos planos - exclusiva do gestor
+        # POST: processar cadastro de aluno
+        nome = request.form.get('nome', '').strip()
+        email = request.form.get('email', '').strip()
+        personal_id = request.form.get('personal_id', '')
+        plano_id = request.form.get('plano_id', '')
+        plano_data_inicio = request.form.get('plano_data_inicio', '')
+        senha = 'Senha@luno123'
+        tipo_usuario = 'aluno'
+
+        # Criar aluno
+        data = {
+            'nome': nome,
+            'email': email,
+            'personal_id': personal_id,
+            'plano_id': plano_id,
+            'plano_data_inicio': plano_data_inicio,
+            'senha': senha,
+            'tipo_usuario': tipo_usuario
+        }
+
+        try:
+            aluno_model = g.models.aluno
+            aluno_id = aluno_model.create(data)
+            flash("Aluno cadastrado com sucesso!", "success")
+            return redirect(url_for('cadastro-aluno'))
+        except ErroDadosInvalidos as e:
+            flash(str(e), "error")
+            return redirect(url_for('cadastro-aluno'))
+        except Exception as e:
+            # Log do erro para debug (em produção, use logging)
+            print(f"Erro ao cadastrar aluno: {e}")
+            flash("Erro ao realizar cadastro. Tente novamente.", "error")
+            return redirect(url_for('cadastro-aluno'))
+    
+    # tela de gerenciamento dos planos - exclusiva do gestor
     @staticmethod
     @autenticado
     def planos():
@@ -130,7 +168,7 @@ class UserController:
             return render_template('planos.html', planos=planos, usuario=usuario)
 
     
-    #tela de gerenciamento dos planos - exclusiva do gestor
+    # tela de gerenciamento dos planos - exclusiva do gestor
     @staticmethod
     @autenticado
     def cadastro_plano():
@@ -166,8 +204,22 @@ class UserController:
             flash("Erro ao realizar cadastro. Tente novamente.", "error")
             return redirect(url_for('cadastro-plano'))
     
-    #tela de autenticação da entrada dos alunos - exclusiva do gestor
+    # tela de autenticação da entrada dos alunos - exclusiva do gestor
     @staticmethod
     @autenticado
     def autentica_entrada():
-        return render_template('autentica-entrada.html')
+        usuario = getattr(g, "current_user", None) # dados do usuário
+        return render_template('autentica-entrada.html', usuario=usuario)
+    
+    # tela de gerenciamento de fichas - exclusiva do gestor
+    @staticmethod
+    @autenticado
+    def fichas_gestor():
+        usuario = getattr(g, "current_user", None) # dados do usuário
+        return render_template('fichas-gestor.html', usuario=usuario)
+    
+    @staticmethod
+    @autenticado
+    def cadastro_ficha():
+        usuario = getattr(g, "current_user", None) # dados do usuário
+        return render_template('cadastro-ficha.html', usuario=usuario)

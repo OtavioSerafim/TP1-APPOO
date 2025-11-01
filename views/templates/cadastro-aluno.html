@@ -32,6 +32,7 @@
             <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
             <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
             <a href="{{ url_for('planos') }}">Planos</a>
+            <a href="{{ url_for('fichas-gestor') }}">Fichas</a>
         </div>
         <form method="post" action="{{ url_for('auth_logout') }}">
             <button type="submit" class="logout">Sair</button>
@@ -46,48 +47,41 @@
                     <input type="text" name="nome" id="client-name" required>
                 </div>
                 <div class="client-field">
-                    <label for="client-email"><p>E-mail:</p></label>
+                    <label for="client-email"><p>Email:</p></label>
                     <input type="email" name="email" id="client-email" required>
                 </div>
                 <div class="client-radio">
                     <p>Personal trainer:</p>
+                    {% for personal in personals %}
                     <div class="radio-item">
-                        <input type="radio" id="personal00" name="personal_id" value="00" required>
-                        <label for="personal00">Nenhum</label>
+                        <input type="radio" id="personal{{ personal.id }}" name="personal_id" value="{{ personal.id }}" required>
+                        <label for="personal{{ personal.id }}">{{ personal.nome }}</label>
                     </div>
+                    {% else %}
                     <div class="radio-item">
-                        <input type="radio" id="personal01" name="personal_id" value="01">
-                        <label for="personal01">Pantera</label>
+                        <input type="radio" id="personal0" name="personal_id" value="0" required>
+                        <label for="personal0">Nenhum</label>
                     </div>
-                    <div class="radio-item">
-                        <input type="radio" id="personal02" name="personal_id" value="02">
-                        <label for="personal02">Gracyanne Barbosa</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="personal03" name="personal_id" value="03">
-                        <label for="personal03">Cariani</label>
-                    </div>
+                    {% endfor %}
                 </div>
-                <div class="client-checkbox">
-                    <p>Exercícios da ficha:</p>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="exercicio01" name="plano_id" value="01">
-                        <label for="exercicio01">Leg press 45°</label>
+                <div class="client-radio">
+                    <p>Plano:</p>
+                    {% for plano in planos %}
+                    <div class="radio-item">
+                        <input type="radio" id="plano{{ plano.id }}" name="plano_id" value="{{ plano.id }}" required>
+                        <label for="plano{{ plano.id }}">{{ plano.nome }}</label>
                     </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="exercicio02" name="plano_id" value="02">
-                        <label for="exercicio02">Supino reto vertical</label>
+                    {% else %}
+                    <div class="radio-item">
+                        <input type="radio" id="plano0" name="plano_id" value="0" required>
+                        <label for="plano0">Nenhum</label>
                     </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="exercicio03" name="plano_id" value="03">
-                        <label for="exercicio03">Remada curvada com barra pronada</label>
-                    </div>
+                    {% endfor %}
                 </div>
                 <div class="client-field">
-                    <label for="start-date"><p>Data de início da ficha:</p></label>
+                    <label for="start-date"><p>Data de início da plano:</p></label>
                     <input type="date" name="plano_data_inicio" id="start-date">
                 </div>
-                <div class="client-face">Em construção</div>
                 <button type="submit" class="client-submit">Cadastrar</button>
             </form>
         </div>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor | Academia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cadastro-ficha.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <script src="{{ url_for('static', filename='scripts/flash-message.js') }}"></script>
+
+    <div class="side-menu">
+        <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
+        <div class="menu-items">
+            <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
+            <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
+            <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
+            <a href="{{ url_for('planos') }}">Planos</a>
+            <a href="{{ url_for('fichas-gestor') }}">Fichas</a>
+        </div>
+        <form method="post" action="{{ url_for('auth_logout') }}">
+            <button type="submit" class="logout">Sair</button>
+        </form>
+    </div>
+    <div class="page-content-container">
+        <div class="page-content">
+            <h1>Criar ficha</h1>
+            <form id="ficha-form" method="post">
+                <div class="ficha-form-campos">
+                    <div class="form-topo">
+                        <!-- nome do aluno dono da ficha -->
+                        <div class="ficha-radio">
+                            <p>Aluno:</p>
+                            {% for aluno in alunos %}
+                            <div class="radio-item">
+                                <input type="radio" id="aluno{{ aluno.id }}" name="aluno_id" value="{{ aluno.id }}" required>
+                                <label for="aluno{{ aluno.id }}">{{ aluno.nome }}</label>
+                            </div>
+                            {% else %}
+                            <h3 style="color: red;">Cadastre um aluno primeiro!</h3>
+                            {% endfor %}
+                        </div>
+                        <!-- nome do personal responsável pela ficha -->
+                        <div class="ficha-radio">
+                            <p>Personal trainer:</p>
+                            {% for personal in personals %}
+                            <div class="radio-item">
+                                <input type="radio" id="personal{{ personal.id }}" name="personal_id" value="{{ personal.id }}" required>
+                                <label for="personal{{ personal.id }}">{{ personal.nome }}</label>
+                            </div>
+                            {% else %}
+                            <div class="radio-item">
+                                <input type="radio" id="personal0" name="personal_id" value="0" required>
+                                <label for="personal0">Nenhum</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- descrição da ficha -->
+                        <div class="ficha-field">
+                            <label for="ficha-desc"><p>Descrição:</p></label>
+                            <textarea name="descricao" id="ficha-desc"></textarea>
+                        </div>
+                    </div>
+                    <!-- seção de personalização dos exercícios -->
+                    <div class="exercicios-container">
+                        <h3>Exercícios</h3>
+                        <div class="exercicio-container">
+                            <div class="exercicio">
+                                <div>
+                                    <!-- nome do exercício -->
+                                    <div class="ficha-field">
+                                        <label for="exercise-name"><p>Nome do exercício:</p></label>
+                                        <input type="text" name="nome" id="exercise-name" required>
+                                    </div>
+                                    <!-- equipamento para o exercício -->
+                                    <div class="ficha-radio">
+                                        <p>Equipamento:</p>
+                                        {% for equipamento in equipamentos %}
+                                        <div class="radio-item">
+                                            <input type="radio" id="equipamento{{ equipamento.id }}" name="equipamento_id" value="{{ equipamento.id }}" required>
+                                            <label for="equipamento{{ equipamento.id }}">{{ equipamento.nome }}</label>
+                                        </div>
+                                        {% else %}
+                                        <h3 style="color: red;">Cadastre um equipamento primeiro!</h3>
+                                        {% endfor %}
+                                    </div>
+                                    <!-- número de séries -->
+                                    <div class="ficha-field">
+                                        <label for="series"><p>Número de séries:</p></label>
+                                        <input type="number" name="series" id="series" step="1" min="1" required>
+                                    </div>
+                                    <!-- número de repetições -->
+                                    <div class="ficha-field">
+                                        <label for="repeticoes"><p>Número de repetições:</p></label>
+                                        <input type="number" name="repeticoes" id="repeticoes" step="1" min="1" required>
+                                    </div>
+                                </div>
+                                <div>
+                                    <!-- carga no primeiro dia da ficha -->
+                                    <div class="ficha-field">
+                                        <label for="carga"><p>Carga inicial (kg):</p></label>
+                                        <input type="number" name="carga" id="carga" step="0.5" min="0" required>
+                                    </div>
+                                    <!-- tempo de descanso entre as séries -->
+                                    <div class="ficha-field">
+                                        <label for="tempo_descanso"><p>Descanso (segundos):</p></label>
+                                        <input type="number" name="tempo_descanso" id="tempo_descanso" step="1" min="1" required>
+                                    </div>
+                                    <!-- observações para o exercício -->
+                                    <div class="ficha-field">
+                                        <label for="observacoes"><p>Observações:</p></label>
+                                        <textarea name="observacoes" id="observacoes"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="add-exercicio">Adicionar exercício</a>
+                    </div>
+                </div>
+                <button type="submit" class="ficha-submit">Cadastrar ficha</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts/duplica-exercicio.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/processa-logout.js') }}"></script>
+</body>
+</html>

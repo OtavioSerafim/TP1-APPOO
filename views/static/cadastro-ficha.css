@@ -1,0 +1,119 @@
+#ficha-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ficha-form-campos {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.ficha-form-campos > div {
+    flex: 1 1 30%;
+}
+
+.exercicios-container {
+    flex: 1 1 70% !important;
+}
+
+.form-topo, .exercicios-container, .exercicio-container, .exercicio > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.exercicio-container {
+    padding: 1rem;
+    background-color: var(--blue-50);
+    border-radius: 10px;
+    box-shadow: 0 10px 10px 0 #01081b27;
+}
+
+.exercicio {
+    display: flex;
+    gap: 1rem;
+}
+
+.exercicio > div {
+    flex: 1;
+}
+
+.ficha-field, .ficha-radio {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.ficha-radio p {
+    font-weight: 600;
+}
+
+.ficha-field, .ficha-submit {
+    background: none;
+    width: fit-content;
+    font-size: 1rem;
+}
+
+.ficha-field {
+    display: flex;
+    width: 100%;
+}
+
+.ficha-field input, .ficha-field textarea {
+    flex: 1;
+    border: 1px solid var(--blue-900);
+    border-radius: 5px;
+    background: none;
+    height: 3rem;
+    padding: 1rem;
+    max-width: 500px;
+}
+
+.ficha-field textarea {
+    min-height: 6rem;
+    resize: none;
+}
+
+.ficha-field label {
+    font-weight: 600;
+}
+
+.ficha-submit, .add-exercicio {
+    padding: .8rem 1.5rem;
+    border-radius: 7px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    background-color: var(--blue-400);
+    color: white;
+    transition: all .2s ease;
+}
+
+.ficha-submit:hover, .add-exercicio:hover {
+    cursor: pointer;
+    background-color: var(--blue-600);
+}
+
+.add-exercicio {
+    padding: .5rem 1rem;
+    width: fit-content;
+}
+
+.remove-exercicio {
+    background-color: #dc3545;
+    color: white;
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all .2s ease;
+    width: fit-content;
+    align-self: flex-end;
+}
+
+.remove-exercicio:hover {
+    background: #c82333 !important;
+}
