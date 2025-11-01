@@ -108,6 +108,74 @@ class StudentController:
 		return redirect_response
 
 	@staticmethod
+	@autenticado
+	def atualizar_dados(aluno_id: int):
+		redirect_response = redirect(url_for('alunos-gestor'))
+
+		nome = request.form.get('nome', '').strip()
+		email = request.form.get('email', '').strip()
+		personal_raw = request.form.get('personal_id', '').strip()
+		plano_raw = request.form.get('plano_id', '').strip()
+		plano_data_inicio = request.form.get('plano_data_inicio', '').strip()
+
+		if not nome or not email:
+			flash('Informe nome e e-mail para atualizar o aluno.', 'error')
+			return redirect_response
+		if '@' not in email:
+			flash('Informe um e-mail válido.', 'error')
+			return redirect_response
+
+		personal_id = None
+		if personal_raw:
+			try:
+				personal_id = int(personal_raw)
+				if personal_id <= 0:
+					personal_id = None
+			except ValueError:
+				flash('Personal selecionado inválido.', 'error')
+				return redirect_response
+
+		plano_id = None
+		if plano_raw:
+			try:
+				plano_id = int(plano_raw)
+				if plano_id <= 0:
+					plano_id = None
+			except ValueError:
+				flash('Plano selecionado inválido.', 'error')
+				return redirect_response
+
+		if plano_id and not plano_data_inicio:
+			flash('Informe a data de início do plano selecionado.', 'error')
+			return redirect_response
+		if not plano_id:
+			plano_data_inicio = None
+
+		dados = {
+			'nome': nome,
+			'email': email,
+			'personal_id': personal_id,
+			'plano_id': plano_id,
+			'plano_data_inicio': plano_data_inicio,
+		}
+
+		try:
+			atualizados = g.models.aluno.update(aluno_id, dados)
+		except ErroDadosInvalidos as err:
+			flash(str(err), 'error')
+			return redirect_response
+		except Exception as err:
+			print(f"Erro ao atualizar aluno {aluno_id}: {err}")
+			flash('Erro ao atualizar o aluno. Tente novamente.', 'error')
+			return redirect_response
+
+		if atualizados == 0:
+			flash('Aluno não encontrado para atualização.', 'error')
+		else:
+			flash('Aluno atualizado com sucesso!', 'success')
+		return redirect_response
+
+	@staticmethod
 	def _row_to_dict(row):
 		if row is None:
 			return {}

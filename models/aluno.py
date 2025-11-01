@@ -71,12 +71,18 @@ class Aluno(Usuario):
         """Retorna todos os alunos com seus dados completos (usuário + aluno)."""
         query = """
         SELECT 
-            u.id, u.nome, u.email,
-            a.personal_id, a.plano_id, a.plano_data_inicio,
-            strftime('%Y-%m-%d às %H:%M', a.data_ultima_entrada) AS data_ultima_entrada,
-            p.nome AS plano_nome
+            u.id,
+            u.nome,
+            u.email,
+            a.personal_id,
+            up.nome AS personal_nome,
+            a.plano_id,
+            p.nome AS plano_nome,
+            a.plano_data_inicio,
+            strftime('%Y-%m-%d às %H:%M', a.data_ultima_entrada) AS data_ultima_entrada
         FROM usuarios u
         INNER JOIN alunos a ON u.id = a.id
+        LEFT JOIN usuarios up ON up.id = a.personal_id
         LEFT JOIN planos p ON a.plano_id = p.id
         WHERE u.tipo_usuario = 'aluno'
         ORDER BY u.nome

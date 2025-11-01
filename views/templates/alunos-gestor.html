@@ -48,23 +48,40 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
+                            <th>E-mail</th>
                             <th>Personal</th>
                             <th>Plano</th>
+                            <th>Início do plano</th>
                             <th>Última entrada</th>
-                            <th>Data de início do plano</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for aluno in alunos %}
                         <tr>
                             <td>{{ aluno.nome }}</td>
-                            <td>Nome do personal</td>
-                            <td>Nome do plano</td>
-                            <td>{{ aluno.data_ultima_entrada }}</td>
-                            <td>{{ aluno.plano_data_inicio }}</td>
+                            <td>{{ aluno.email }}</td>
+                            <td>{{ aluno.personal_nome or 'Sem personal' }}</td>
+                            <td>{{ aluno.plano_nome or 'Sem plano' }}</td>
+                            <td>{{ aluno.plano_data_inicio or '—' }}</td>
+                            <td>{{ aluno.data_ultima_entrada or '—' }}</td>
+                            <td class="table-actions">
+                                <button
+                                    type="button"
+                                    class="student-edit"
+                                    data-id="{{ aluno.id }}"
+                                    data-nome="{{ aluno.nome|e }}"
+                                    data-email="{{ aluno.email|e }}"
+                                    data-personal="{{ aluno.personal_id or '' }}"
+                                    data-plano="{{ aluno.plano_id or '' }}"
+                                    data-plano-inicio="{{ aluno.plano_data_inicio or '' }}"
+                                >
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </td>
                         </tr>
                         {% else %}
-                        <tr><td colspan="5">Nenhum aluno cadastrado.</td></tr>
+                        <tr><td colspan="7">Nenhum aluno cadastrado.</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -72,44 +89,49 @@
             <a href="{{ url_for('cadastro-aluno') }}" class="cadastrar">Cadastrar aluno</a>
         </div>
     </div>
+    <div class="student-popup-overlay" id="student-edit-popup">
+        <div class="student-popup">
+            <h2>Editar aluno</h2>
+            <form id="student-edit-form" method="post" data-update-action-template="{{ url_for('atualizar_aluno', aluno_id=0) }}">
+                <div class="student-field">
+                    <label for="student-name"><p>Nome:</p></label>
+                    <input type="text" name="nome" id="student-name" required>
+                </div>
+                <div class="student-field">
+                    <label for="student-email"><p>E-mail:</p></label>
+                    <input type="email" name="email" id="student-email" required>
+                </div>
+                <div class="student-select">
+                    <label for="student-personal"><p>Personal trainer:</p></label>
+                    <select name="personal_id" id="student-personal">
+                        <option value="">Sem personal</option>
+                        {% for personal in personals %}
+                        <option value="{{ personal['id'] }}">{{ personal['nome'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="student-select">
+                    <label for="student-plan"><p>Plano:</p></label>
+                    <select name="plano_id" id="student-plan">
+                        <option value="">Sem plano</option>
+                        {% for plano in planos %}
+                        <option value="{{ plano['id'] }}">{{ plano['nome'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="student-field">
+                    <label for="student-plan-start"><p>Data de início do plano:</p></label>
+                    <input type="date" name="plano_data_inicio" id="student-plan-start">
+                </div>
+                <div class="popup-actions">
+                    <button type="button" class="popup-close">Cancelar</button>
+                    <button type="submit" class="popup-primary">Salvar alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <script>
-        document.querySelector('.tabela').addEventListener('click', (e) => {
-            // Editar status
-            if (e.target.closest('.edit-status')) {
-                const statusCell = e.target.closest('td');
-                statusCell.classList.add('editing');
-            }
-            
-            // Cancelar edição de status
-            if (e.target.closest('.edit-cancel')) {
-                const statusCell = e.target.closest('td');
-                statusCell.classList.remove('editing');
-            }
-
-            // Submissão do formulário de status
-            if (e.target.closest('.machine-submit')) {
-                const form = e.target.closest('.status-form');
-                const selected = form.querySelector('input[name="status"]:checked');
-                if (selected) {
-                    const statusCell = form.closest('td');
-                    statusCell.classList.remove('editing');
-                }
-            }
-
-            // Deletar
-            if (e.target.closest('.delete')) {
-                const deleteCell = e.target.closest('td');
-                deleteCell.classList.add('deleting');
-            }
-
-            // Cancelar deleção
-            if (e.target.closest('.del-no')) {
-                const deleteCell = e.target.closest('td');
-                deleteCell.classList.remove('deleting');
-            }
-        });
-    </script>
+    <script src="{{ url_for('static', filename='scripts/alunos.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/processa-logout.js') }}"></script>
 </body>
 </html>
