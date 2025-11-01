@@ -66,6 +66,11 @@ class UserController:
                 capacidade_valor = int(capacidade_raw)
                 if capacidade_valor <= 0:
                     raise ValueError
+                presentes = current_app.config.get('ACADEMIA_PRESENTES', [])
+                ocupacao_atual = len(presentes)
+                if capacidade_valor < ocupacao_atual:
+                    flash('A capacidade máxima não pode ser menor que o número de alunos presentes no momento.', 'error')
+                    return redirect(url_for('gestor'))
             except ValueError:
                 flash('Informe um número inteiro positivo para a capacidade máxima.', 'error')
                 return redirect(url_for('gestor'))
@@ -125,8 +130,17 @@ class UserController:
     @autenticado
     def alunos_gestor():
         usuario = getattr(g, "current_user", None) # dados do usuário
-        alunos = g.models.aluno.get_all() # lista planos
-        return render_template('alunos-gestor.html', usuario=usuario, alunos=alunos)
+        alunos = g.models.aluno.get_all() # lista alunos
+        planos_raw = g.models.plano.get_all()
+        planos = [dict(row) for row in planos_raw]
+        personals = g.models.personal.get_all()
+        return render_template(
+            'alunos-gestor.html',
+            usuario=usuario,
+            alunos=alunos,
+            planos=planos,
+            personals=personals,
+        )
     
     # tela de cadastro de alunos - exclusiva do gestor
     @staticmethod
