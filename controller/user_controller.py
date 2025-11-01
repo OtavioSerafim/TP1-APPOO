@@ -1,12 +1,40 @@
-from flask import render_template, request, redirect, url_for, flash, g
+import os
+
+import jwt
+from flask import render_template, request, redirect, url_for, flash, g, make_response
 
 from utils.decorators.Autenticado import autenticado
 from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
+from utils.errors.erroAutenticacao import ErroAutenticacao
+from utils.errors.erroConfiguracao import ErroConfiguracao
 
 class UserController:
     @staticmethod
     # tela de login de um usuário no programa
     def login():
+        token = request.cookies.get('auth_token')
+        if token:
+            secret = os.getenv("JWT_SECRET")
+            if not secret:
+                raise ErroConfiguracao("JWT_SECRET não está configurado nas variáveis de ambiente.")
+
+            try:
+                payload = jwt.decode(token, secret, algorithms=["HS256"])
+                usuario_id = int(payload.get("sub"))
+                usuario = g.models.usuario.read(usuario_id)
+                if usuario is None:
+                    raise ErroAutenticacao("Usuário não encontrado.")
+
+                role = payload.get("role")
+                if role == "gestor":
+                    return redirect(url_for('gestor'))
+                if role == "personal":
+                    return redirect(url_for('personal'))
+            except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, ValueError, TypeError, ErroAutenticacao):
+                response = make_response(render_template('login.html'))
+                response.delete_cookie('auth_token')
+                return response
+
         return render_template('login.html')
     
     # tela de cadastro de um usuário do programa
@@ -62,6 +90,11 @@ class UserController:
     def gestor():
         return render_template('home-gestor.html')
     
+    @staticmethod
+    @autenticado
+    def personal():
+        return render_template('home-personal.html')
+
     # tela de gestão e visualização de equipamentos - exclusiva do gestor
     @staticmethod
     @autenticado
