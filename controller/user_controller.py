@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, g, current_app
+from flask import render_template, request, redirect, url_for, flash, g, current_app, jsonify
 
 from utils.decorators.Autenticado import autenticado
 from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
@@ -239,15 +239,112 @@ class UserController:
         usuario = getattr(g, "current_user", None) # dados do usuário
         return render_template('autentica-entrada.html', usuario=usuario)
     
+    # API que retorna ficha + exercicios
+    @staticmethod
+    @autenticado
+    def api_ficha(ficha_id: int):
+        ficha = g.models.ficha.listar_por_id(ficha_id)
+        if not ficha:
+            return jsonify({"error": "Ficha não encontrada"}), 404
+        exercicios = g.models.exercicio.listar_por_ficha(ficha_id)
+        return jsonify({"ficha": ficha, "exercicios": exercicios})
+    
     # tela de gerenciamento de fichas - exclusiva do gestor
     @staticmethod
     @autenticado
     def fichas_gestor():
+        fichas = g.models.ficha.get_all()
+        exercicios = g.models.exercicio.get_all()
         usuario = getattr(g, "current_user", None) # dados do usuário
-        return render_template('fichas-gestor.html', usuario=usuario)
+        return render_template('fichas-gestor.html', usuario=usuario, fichas=fichas, exercicios=exercicios)
     
     @staticmethod
     @autenticado
     def cadastro_ficha():
-        usuario = getattr(g, "current_user", None) # dados do usuário
-        return render_template('cadastro-ficha.html', usuario=usuario)
+        if request.method == 'GET':
+            alunos = g.models.aluno.get_all()
+            personals = g.models.personal.get_all()
+            equipamentos = g.models.equipamento.listar_disponiveis()
+            usuario = getattr(g, "current_user", None) # dados do usuário
+            return render_template(
+                'cadastro-ficha.html',
+                usuario=usuario,
+                equipamentos=equipamentos,
+                personals=personals,
+                alunos=alunos
+            )
+        
+        # POST: processar cadastro de ficha
+        aluno_id = request.form.get('aluno_id', '')
+        personal_id = request.form.get('personal_id', '')
+        descricao = request.form.get('descricao', '').strip()
+
+        # Processar exercícios (agora vem como array)
+        exercicios_data = request.form.to_dict(flat=False)
+        exercicios = []
+
+        # Se houver exercicios[0][nome], exercicios[1][nome], etc.
+        i = 0
+        while f'exercicios[{i}][nome]' in exercicios_data:
+            exercicio = {
+                'nome': exercicios_data[f'exercicios[{i}][nome]'][0],
+                'equipamento_id': exercicios_data[f'exercicios[{i}][equipamento_id]'][0],
+                'series': exercicios_data[f'exercicios[{i}][series]'][0],
+                'repeticoes': exercicios_data[f'exercicios[{i}][repeticoes]'][0],
+                'carga': exercicios_data[f'exercicios[{i}][carga]'][0],
+                'tempo_descanso': exercicios_data[f'exercicios[{i}][tempo_descanso]'][0],
+                'observacoes': exercicios_data.get(f'exercicios[{i}][observacoes]', [''])[0]
+            }
+            exercicios.append(exercicio)
+            i += 1
+
+        # Se não houver array format, pega os valores diretos (primeiro exercício)
+        if not exercicios:
+            exercicio = {
+                'nome': request.form.get('nome', ''),
+                'equipamento_id': request.form.get('equipamento_id', ''),
+                'series': request.form.get('series', ''),
+                'repeticoes': request.form.get('repeticoes', ''),
+                'carga': request.form.get('carga', ''),
+                'tempo_descanso': request.form.get('tempo_descanso', ''),
+                'observacoes': request.form.get('observacoes', '')
+            }
+            exercicios.append(exercicio)
+
+        # Validação básica
+        if not aluno_id or not personal_id or not exercicios:
+            flash("Preencha todos os campos obrigatórios e adicione ao menos um exercício.", "error")
+            return redirect(url_for('cadastro-ficha'))
+        
+        try:
+            # Criar a ficha
+            ficha_data = {
+                'aluno_id': aluno_id,
+                'personal_id': personal_id,
+                'descricao': descricao
+            }
+            ficha_model = g.models.ficha
+            ficha_id = ficha_model.create(ficha_data)
+
+            # Criar os exercícios vinculados à ficha
+            exercicio_model = g.models.exercicio
+            exercicios_criados = 0
+            
+            for ex in exercicios:
+                # Adicionar o ficha_id a cada exercício
+                ex['ficha_id'] = ficha_id
+                exercicio_model.create(ex)
+                exercicios_criados += 1
+
+            flash(f"Ficha cadastrada com sucesso! {exercicios_criados} exercício(s) adicionado(s).", "success")
+            return redirect(url_for('fichas-gestor'))
+        
+        except ErroDadosInvalidos as e:
+            flash(str(e), "error")
+            return redirect(url_for('cadastro-ficha'))
+        except Exception as e:
+            print(f"Erro ao cadastrar ficha: {e}")
+            import traceback
+            traceback.print_exc()
+            flash("Erro ao realizar cadastro. Tente novamente.", "error")
+            return redirect(url_for('cadastro-ficha'))
