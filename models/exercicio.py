@@ -41,9 +41,18 @@ class Exercicio(Model):
         return payload
 
     def listar_por_ficha(self, ficha_id):
-        query = (
-            f"SELECT {', '.join(self.columns)} "
-            f"FROM {self.table_name} WHERE ficha_id = ?"
-        )
+        """Retorna exercícios de uma ficha com nome do equipamento."""
+        query = """
+        SELECT 
+            e.id, e.ficha_id, e.equipamento_id, e.nome, 
+            e.series, e.repeticoes, e.carga, e.tempo_descanso, 
+            e.observacoes, e.criado_em, e.atualizado_em,
+            eq.nome AS equipamento_nome
+        FROM exercicios e
+        LEFT JOIN equipamentos eq ON e.equipamento_id = eq.id
+        WHERE e.ficha_id = ?
+        ORDER BY e.id
+        """
         self.cursor.execute(query, (ficha_id,))
-        return self.cursor.fetchall()
+        cols = [c[0] for c in self.cursor.description]
+        return [dict(zip(cols, row)) for row in self.cursor.fetchall()]

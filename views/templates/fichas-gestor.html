@@ -29,6 +29,7 @@
     <div class="side-menu">
         <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
         <div class="menu-items">
+            <a href="{{ url_for('gestor') }}">Início</a>
             <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
             <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
             <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
@@ -43,13 +44,17 @@
         <div class="page-content">
             <h1>Fichas</h1>
             <div class="fichas">
-                <a href="#" class="ficha">
+                {% for ficha in fichas %}
+                <a href="" class="ficha" data-ficha-id="{{ ficha.id }}">
                     <div class="ficha-nomes">
-                        <h3>Nome do aluno</h3>
-                        <p>Nome do treinador</p>
+                        <h3>{{ ficha.aluno_nome }}</h3>
+                        <p>{{ ficha.personal_nome }}</p>
                     </div>
                     <i class="material-icons">keyboard_arrow_right</i>
                 </a>
+                {% else %}
+                <p>Crie uma ficha!</p>
+                {% endfor %}
             </div>
             <a href="{{ url_for('cadastro-ficha') }}" class="cadastrar">Criar ficha</a>
         </div>
@@ -57,20 +62,28 @@
 
     <div class="ficha-detalhes-container" id="ficha-popup">
         <div class="ficha-detalhes">
-            <h1>Nome do aluno</h1>
-            <h2>Nome do treinador</h2>
-            <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque id architecto aliquid asperiores unde iusto inventore, incidunt beatae obcaecati eligendi esse dolor similique fugiat officia, cumque voluptas. Accusamus, neque debitis!
-            </p>
+            <h1 id="popup-aluno">-</h1>
+            <h2 id="popup-personal">-</h2>
+            <p id="popup-descricao">-</p>
             <div class="exercicios">
                 <h2>Exercícios</h2>
-                <ul>
-                    <li>Exercicio 1</li>
-                    <li>Exercicio 2</li>
-                    <li>Exercicio 3</li>
-                    <li>Exercicio 4</li>
-                    <li>Exercicio 5</li>
-                </ul>
+                <div class="tabela-exercicios">
+                    <table id="popup-exercicios-table">
+                        <thead>
+                            <tr>
+                                <th>Exercício</th>
+                                <th>Equipamento</th>
+                                <th>Séries</th>
+                                <th>Repetições</th>
+                                <th>Carga</th>
+                                <th>Descanso</th>
+                            </tr>
+                        </thead>
+                        <tbody id="popup-exercicios">
+                            <!-- linhas inseridas com javascript -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -29,6 +29,7 @@
     <div class="side-menu">
         <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
         <div class="menu-items">
+            <a href="{{ url_for('gestor') }}">Início</a>
             <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
             <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
             <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
@@ -94,8 +95,8 @@
                                         <p>Equipamento:</p>
                                         {% for equipamento in equipamentos %}
                                         <div class="radio-item">
-                                            <input type="radio" id="equipamento{{ equipamento.id }}" name="equipamento_id" value="{{ equipamento.id }}" required>
-                                            <label for="equipamento{{ equipamento.id }}">{{ equipamento.nome }}</label>
+                                            <input type="radio" id="{{ equipamento.nome.strip() }}0" name="equipamento_id" value="{{ equipamento.id }}" required>
+                                            <label for="{{ equipamento.nome.strip() }}0">{{ equipamento.nome }}</label>
                                         </div>
                                         {% else %}
                                         <h3 style="color: red;">Cadastre um equipamento primeiro!</h3>
