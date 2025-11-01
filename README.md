@@ -30,6 +30,9 @@ A aplicação adota uma separação clara de responsabilidades:
 - [Visão rápida dos models](docs/models.md)
 - [Resumo do banco de dados](docs/database.md)
 - [Catálogo de erros personalizados](docs/erros.md)
+- [Configuração do app Flask](docs/app.md)
+- [Camada de controllers](docs/controllers.md)
+- [Overview das views](docs/views.md)
 
 ### Contexto de modelos compartilhado
 O arquivo `models/main.py` define a classe `Models`, responsável por abrir uma única conexão SQLite por requisição e expor instâncias de cada modelo (usuários, alunos, planos, equipamentos etc.). Essa conexão é criada em `@app.before_request` e encerrada em `@app.teardown_request`, garantindo encapsulamento e evitando vazamento de recursos.
