@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticar Entrada | Academia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='autentica-entrada.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <script src="{{ url_for('static', filename='scripts/flash-message.js') }}"></script>
+
+    <div class="side-menu">
+    <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
+        <div class="menu-items">
+            <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
+            <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
+            <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
+            <a href="{{ url_for('planos') }}">Planos</a>
+        </div>
+        <form method="post" action="{{ url_for('auth_logout') }}">
+            <button type="submit" class="logout">Sair</button>
+        </form>
+    </div>
+    <div class="page-content-container">
+        <div class="page-content entrada-page">
+            <header class="entrada-header">
+                <div>
+                    <h1>Autenticar entrada</h1>
+                    <p class="intro">Procure o aluno pelo nome ou email e registre a presença em poucos cliques.</p>
+                </div>
+                <div class="lotacao">
+                    <span class="lotacao-label">Alunos presentes</span>
+                    <span class="lotacao-valor">{{ presentes|length }}/{{ capacidade_maxima }}</span>
+                </div>
+            </header>
+
+            <section class="entrada-form">
+                <form method="get" action="{{ url_for('autentica-entrada') }}" class="busca-form">
+                    <label for="consulta">Nome ou email do aluno</label>
+                    <div class="busca-grupo">
+                        <input
+                            id="consulta"
+                            name="q"
+                            type="text"
+                            value="{{ termo_busca }}"
+                            placeholder="Ex.: ana@academia.com"
+                            autocomplete="off"
+                            required
+                        >
+                        <button type="submit">Pesquisar</button>
+                    </div>
+                </form>
+            </section>
+
+            {% if termo_busca %}
+            <section class="resultado-busca">
+                <div class="resultado-cabecalho">
+                    <h2>Resultados</h2>
+                    <span class="quantidade">{{ resultados|length }} encontrado{{ resultados|length == 1 and '' or 's' }}</span>
+                </div>
+                {% if resultados %}
+                    <ul class="lista-resultados">
+                        {% for aluno in resultados %}
+                        <li class="card-resultado">
+                            <div class="detalhes">
+                                <strong>{{ aluno.nome }}</strong>
+                                <span>{{ aluno.email }}</span>
+                            </div>
+                            <form method="post" action="{{ url_for('registrar_entrada') }}">
+                                <input type="hidden" name="aluno_id" value="{{ aluno.id }}">
+                                <input type="hidden" name="context_query" value="{{ termo_busca }}">
+                                <button type="submit" class="btn-registrar">Registrar entrada</button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="nenhum-resultado">Nenhum aluno encontrado para "{{ termo_busca }}".</p>
+                {% endif %}
+            </section>
+            {% endif %}
+
+            <section class="presentes">
+                <div class="presentes-cabecalho">
+                    <h2>Presentes agora</h2>
+                    <span class="quantidade">{{ presentes|length }} aluno{{ presentes|length == 1 and '' or 's' }}</span>
+                </div>
+                {% if presentes %}
+                    <ul class="lista-presentes">
+                        {% for presente in presentes %}
+                        <li class="card-presenca">
+                            <div class="detalhes">
+                                <strong>{{ presente.nome }}</strong>
+                                <span>{{ presente.email }}</span>
+                                <small>Entrada: {{ presente.entrada_em.replace('T', ' ') if presente.entrada_em else '-' }}</small>
+                            </div>
+                            <form method="post" action="{{ url_for('registrar_saida') }}">
+                                <input type="hidden" name="aluno_id" value="{{ presente.id }}">
+                                <input type="hidden" name="context_query" value="{{ termo_busca }}">
+                                <button type="submit" class="btn-saida">Registrar saída</button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="nenhum-presente">Nenhum aluno presente no momento.</p>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts/processa-logout.js') }}"></script>
+</body>
+</html>
