@@ -2,6 +2,8 @@
 
 from datetime import datetime
 
+from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
+
 from .model import Model
 from .usuario import Usuario
 
@@ -105,3 +107,26 @@ class Aluno(Usuario):
         """Remove o aluno garantindo exclusão dos dados extras vinculados."""
         self._aluno_model.delete(usuario_id)
         return super().delete(usuario_id)
+
+
+
+    def buscar_por_nome_ou_email(self, termo):
+        """Localiza alunos pelo nome ou email (case insensitive)."""
+        padrao = f"%{termo.lower()}%"
+        query = (
+            "SELECT u.id, u.nome, u.email "
+            "FROM usuarios u "
+            "INNER JOIN alunos a ON a.id = u.id "
+            "WHERE LOWER(u.nome) LIKE ? OR LOWER(u.email) LIKE ? "
+            "ORDER BY u.nome ASC"
+        )
+        self.cursor.execute(query, (padrao, padrao))
+        return self.cursor.fetchall()
+
+    def registrar_entrada(self, aluno_id, instante=None):
+        """Atualiza o timestamp de última entrada para o aluno informado."""
+        momento = instante or datetime.now().isoformat()
+        atualizados = self._aluno_model.update(aluno_id, {'data_ultima_entrada': momento})
+        if atualizados == 0:
+            raise ErroDadosInvalidos('Aluno não encontrado para registrar entrada.')
+        return momento
