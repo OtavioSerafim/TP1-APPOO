@@ -53,7 +53,7 @@
                             <th>Status</th>
                             <th>Criado em</th>
                             <th>Atualizado em</th>
-                            <th>Excluir</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,46 +61,33 @@
                         <tr>
                             <td>{{ linha.id }}</td>
                             <td>{{ linha.nome }}</td>
-                            <td>{{ linha.valor }}</td>
-                            <td>
-                                <div class="editing-title">
-                                    {{ linha.status }}
-                                    <a class="edit-cancel"><i class="fa fa-close"></i></a>
-                                    <a class="edit-status"><i class="fa fa-pencil"></i></a>
-                                </div>
-                                <div class="status-editor">
-                                    <form class="status-form" action="" method="post">
-                                        <div class="machine-radio">
-                                            <p>Status:</p>
-                                            <div class="radio-item">
-                                                <input type="radio" id="disponivel-1" name="status" value="disponivel" required>
-                                                <label for="disponivel-1">Disponível</label>
-                                            </div>
-                                            <div class="radio-item">
-                                                <input type="radio" id="quebrada-1" name="status" value="quebrada">
-                                                <label for="quebrada-1">Quebrada</label>
-                                            </div>
-                                            <div class="radio-item">
-                                                <input type="radio" id="no-conserto-1" name="status" value="no_conserto">
-                                                <label for="no-conserto-1">No conserto</label>
-                                            </div>
-                                            <button type="submit" class="machine-submit"><i class="fa fa-check"></i></button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </td>
+                            <td>R${{ '%.2f' % (linha.valor|float) }}</td>
+                            <td class="status-label">{{ linha.status }}</td>
                             <td>{{ linha.criado_em }}</td>
                             <td>{{ linha.atualizado_em }}</td>
-                            <td>
-                                <a class="delete"><i class="fa fa-trash-o"></i></a>
-                                <div class="delete-confirm">
-                                    <button class="del-yes"><i class="fa fa-check"></i></button>
-                                    <button class="del-no"><i class="fa fa-close"></i></button>
-                                </div>
+                            <td class="table-actions">
+                                <button
+                                    type="button"
+                                    class="equipment-edit"
+                                    data-id="{{ linha.id }}"
+                                    data-nome="{{ linha.nome|e }}"
+                                    data-valor="{{ '%.2f' % (linha.valor|float) }}"
+                                    data-status="{{ linha.status }}"
+                                >
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <button
+                                    type="button"
+                                    class="equipment-delete"
+                                    data-id="{{ linha.id }}"
+                                    data-nome="{{ linha.nome|e }}"
+                                >
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
                             </td>
                         </tr>
                         {% else %}
-                        <tr><td colspan="6">Nenhum equipamento cadastrado.</td></tr>
+                        <tr><td colspan="7">Nenhum equipamento cadastrado.</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -109,43 +96,55 @@
         </div>
     </div>
 
-    <script>
-        document.querySelector('.tabela').addEventListener('click', (e) => {
-            // Editar status
-            if (e.target.closest('.edit-status')) {
-                const statusCell = e.target.closest('td');
-                statusCell.classList.add('editing');
-            }
-            
-            // Cancelar edição de status
-            if (e.target.closest('.edit-cancel')) {
-                const statusCell = e.target.closest('td');
-                statusCell.classList.remove('editing');
-            }
+    <div class="equipment-popup-overlay" id="equipment-edit-popup">
+        <div class="equipment-popup">
+            <h2>Editar equipamento</h2>
+            <form id="equipment-edit-form" method="post" data-update-action-template="{{ url_for('atualizar_equipamento', equipamento_id=0) }}">
+                <div class="equipment-field">
+                    <label for="equipment-name"><p>Nome:</p></label>
+                    <input type="text" name="nome" id="equipment-name" required>
+                </div>
+                <div class="equipment-field">
+                    <label for="equipment-value"><p>Valor:</p></label>
+                    <input type="number" name="valor" id="equipment-value" min="0.01" step="any" required>
+                </div>
+                <div class="equipment-radio">
+                    <p>Status:</p>
+                    <div class="radio-item">
+                        <input type="radio" id="status-disponivel" name="status" value="disponivel" required>
+                        <label for="status-disponivel">Disponível</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="status-quebrada" name="status" value="quebrada">
+                        <label for="status-quebrada">Quebrada</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="status-no-conserto" name="status" value="no_conserto">
+                        <label for="status-no-conserto">No conserto</label>
+                    </div>
+                </div>
+                <div class="popup-actions">
+                    <button type="button" class="popup-close">Cancelar</button>
+                    <button type="submit" class="popup-primary">Salvar alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-            // Submissão do formulário de status
-            if (e.target.closest('.machine-submit')) {
-                const form = e.target.closest('.status-form');
-                const selected = form.querySelector('input[name="status"]:checked');
-                if (selected) {
-                    const statusCell = form.closest('td');
-                    statusCell.classList.remove('editing');
-                }
-            }
+    <div class="equipment-popup-overlay" id="equipment-delete-popup">
+        <div class="equipment-popup equipment-popup--confirm">
+            <h2>Remover equipamento</h2>
+            <p>Tem certeza que deseja remover o equipamento <strong id="equipment-delete-name"></strong>?</p>
+            <form id="equipment-delete-form" method="post" data-delete-action-template="{{ url_for('remover_equipamento', equipamento_id=0) }}">
+                <div class="popup-actions">
+                    <button type="button" class="popup-close">Cancelar</button>
+                    <button type="submit" class="popup-danger">Remover</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-            // Deletar
-            if (e.target.closest('.delete')) {
-                const deleteCell = e.target.closest('td');
-                deleteCell.classList.add('deleting');
-            }
-
-            // Cancelar deleção
-            if (e.target.closest('.del-no')) {
-                const deleteCell = e.target.closest('td');
-                deleteCell.classList.remove('deleting');
-            }
-        });
-    </script>
+    <script src="{{ url_for('static', filename='scripts/equipamentos.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/processa-logout.js') }}"></script>
 </body>
 </html>

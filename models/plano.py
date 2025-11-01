@@ -35,3 +35,9 @@ class Plano(Model):
         if payload:
             payload["atualizado_em"] = datetime.now().isoformat()
         return payload
+
+    def possui_alunos_associados(self, plano_id: int) -> bool:
+        """Retorna True se existir ao menos um aluno vinculado ao plano informado."""
+        query = "SELECT 1 FROM alunos WHERE plano_id = ? LIMIT 1"
+        self.cursor.execute(query, (plano_id,))
+        return self.cursor.fetchone() is not None
