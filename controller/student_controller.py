@@ -176,6 +176,30 @@ class StudentController:
 		return redirect_response
 
 	@staticmethod
+	@autenticado
+	def remover(aluno_id: int):
+		redirect_response = redirect(url_for('alunos-gestor'))
+
+		try:
+			removidos = g.models.aluno.delete(aluno_id)
+		except Exception as err:
+			print(f"Erro ao remover aluno {aluno_id}: {err}")
+			flash('Erro ao remover o aluno. Tente novamente.', 'error')
+			return redirect_response
+
+		if removidos == 0:
+			flash('Aluno não encontrado para remoção.', 'error')
+			return redirect_response
+
+		presentes = StudentController._get_alunos_presentes(raw=True)
+		novos_presentes = [p for p in presentes if p.get('id') != aluno_id]
+		if len(novos_presentes) != len(presentes):
+			StudentController._persist_presencas(novos_presentes)
+
+		flash('Aluno removido com sucesso!', 'success')
+		return redirect_response
+
+	@staticmethod
 	def _row_to_dict(row):
 		if row is None:
 			return {}

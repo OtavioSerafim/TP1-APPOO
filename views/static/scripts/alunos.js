@@ -6,6 +6,12 @@ const personalSelect = document.getElementById('student-personal');
 const planSelect = document.getElementById('student-plan');
 const planStartInput = document.getElementById('student-plan-start');
 
+const studentDeletePopup = document.getElementById('student-delete-popup');
+const studentDeleteForm = document.getElementById('student-delete-form');
+const studentDeleteName = document.getElementById('student-delete-name');
+
+const popups = [studentPopup, studentDeletePopup].filter(Boolean);
+
 const buildAction = (template, id) => {
     if (!template) {
         return '';
@@ -13,19 +19,21 @@ const buildAction = (template, id) => {
     return template.replace('/0/', `/${id}/`);
 };
 
-const closePopup = () => {
-    if (!studentPopup) {
-        return;
-    }
-    studentPopup.classList.remove('active');
+const closeAllPopups = () => {
+    popups.forEach((popup) => popup.classList.remove('active'));
     document.body.style.overflow = '';
 };
 
-const openPopup = () => {
-    if (!studentPopup) {
+const openPopup = (popup) => {
+    if (!popup) {
         return;
     }
-    studentPopup.classList.add('active');
+    popups.forEach((element) => {
+        if (element !== popup) {
+            element.classList.remove('active');
+        }
+    });
+    popup.classList.add('active');
     document.body.style.overflow = 'hidden';
 };
 
@@ -45,12 +53,8 @@ if (planSelect) {
 }
 
 document.addEventListener('click', (event) => {
-    if (!studentForm) {
-        return;
-    }
-
     const editButton = event.target.closest('.student-edit');
-    if (editButton) {
+    if (editButton && studentForm) {
         const {
             id,
             nome,
@@ -75,24 +79,35 @@ document.addEventListener('click', (event) => {
         }
 
         togglePlanStartState();
-        openPopup();
+        openPopup(studentPopup);
+        return;
+    }
+
+    const deleteButton = event.target.closest('.student-delete');
+    if (deleteButton && studentDeleteForm) {
+        const { id, nome } = deleteButton.dataset;
+        studentDeleteForm.action = buildAction(studentDeleteForm.dataset.deleteActionTemplate, id);
+        if (studentDeleteName) {
+            studentDeleteName.textContent = nome || '';
+        }
+        openPopup(studentDeletePopup);
         return;
     }
 
     if (event.target.classList.contains('student-popup-overlay')) {
-        closePopup();
+        closeAllPopups();
     }
 });
 
-if (studentPopup) {
-    studentPopup.querySelectorAll('.popup-close').forEach((button) => {
-        button.addEventListener('click', closePopup);
+popups.forEach((popup) => {
+    popup.querySelectorAll('.popup-close').forEach((button) => {
+        button.addEventListener('click', closeAllPopups);
     });
-}
+});
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
-        closePopup();
+        closeAllPopups();
     }
 });
 

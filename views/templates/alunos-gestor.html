@@ -78,6 +78,14 @@
                                 >
                                     <i class="fa fa-pencil"></i>
                                 </button>
+                                <button
+                                    type="button"
+                                    class="student-delete"
+                                    data-id="{{ aluno.id }}"
+                                    data-nome="{{ aluno.nome|e }}"
+                                >
+                                    <i class="fa fa-trash"></i>
+                                </button>
                             </td>
                         </tr>
                         {% else %}
@@ -126,6 +134,22 @@
                 <div class="popup-actions">
                     <button type="button" class="popup-close">Cancelar</button>
                     <button type="submit" class="popup-primary">Salvar alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="student-popup-overlay" id="student-delete-popup">
+        <div class="student-popup student-popup-danger">
+            <form id="student-delete-form" method="post" data-delete-action-template="{{ url_for('remover_aluno', aluno_id=0) }}">
+                <h2>Remover aluno</h2>
+                <p class="student-delete-text">
+                    Tem certeza de que deseja remover <strong id="student-delete-name"></strong>?
+                    Essa ação não pode ser desfeita.
+                </p>
+                <div class="popup-actions">
+                    <button type="button" class="popup-close">Cancelar</button>
+                    <button type="submit" class="popup-danger">Remover aluno</button>
                 </div>
             </form>
         </div>

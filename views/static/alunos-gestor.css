@@ -78,6 +78,14 @@
     transform: translateY(-1px);
 }
 
+.table-actions .student-delete {
+    background-color: #e24c4c;
+}
+
+.table-actions .student-delete:hover {
+    background-color: #c53d3d;
+}
+
 .page-content table td a i,
 .page-content table td button i {
     transition: all 0.2s ease;
@@ -203,5 +211,35 @@
 
 .popup-primary:hover {
     background-color: var(--blue-600);
+    transform: translateY(-1px);
+}
+
+.student-popup-danger {
+    border-top: 6px solid #e24c4c;
+}
+
+.student-popup-danger h2 {
+    color: #a12020;
+}
+
+.student-delete-text {
+    margin: 1rem 0 1.5rem;
+    line-height: 1.5;
+    color: var(--blue-900);
+}
+
+.popup-danger {
+    border: none;
+    border-radius: 7px;
+    padding: .75rem 1.5rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    background-color: #e24c4c;
+    transition: background-color .2s ease, transform .2s ease;
+}
+
+.popup-danger:hover {
+    background-color: #c53d3d;
     transform: translateY(-1px);
 }

@@ -69,6 +69,7 @@ app.add_url_rule('/gestor/planos/<int:plano_id>/remover', 'remover_plano', PlanC
 app.add_url_rule('/gestor/alunos', 'alunos-gestor', UserController.alunos_gestor)
 app.add_url_rule('/gestor/alunos/novo', 'cadastro-aluno', UserController.cadastro_aluno, methods=['GET', 'POST'])
 app.add_url_rule('/gestor/alunos/<int:aluno_id>/editar', 'atualizar_aluno', StudentController.atualizar_dados, methods=['POST'])
+app.add_url_rule('/gestor/alunos/<int:aluno_id>/remover', 'remover_aluno', StudentController.remover, methods=['POST'])
 app.add_url_rule('/gestor/fichas', 'fichas-gestor', UserController.fichas_gestor)
 app.add_url_rule('/gestor/fichas/novo', 'cadastro-ficha', UserController.cadastro_ficha)
 app.add_url_rule('/gestor/entrada', 'autentica-entrada', StudentController.autentica_entrada, methods=['GET'])
