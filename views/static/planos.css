@@ -46,62 +46,144 @@
     background-color: var(--blue-600);
 }
 
-.delete-container {
+.plan-delete {
+    border: none;
+    background: none;
+    color: var(--blue-500);
+    padding: .6rem .9rem;
+    border-radius: 7px;
+    font-size: 1.4rem;
+    line-height: 1;
     display: flex;
-    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s ease;
 }
 
-.delete {
-    margin-right: 1rem;
+.plan-delete:hover {
+    cursor: pointer;
+    color: var(--blue-900);
+    background-color: rgba(1, 8, 27, 0.08);
+}
+
+.plan-popup-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(1, 8, 27, 0.55);
+    padding: 2rem;
+    z-index: 1000;
+}
+
+.plan-popup-overlay.active {
+    display: flex;
+}
+
+.plan-popup {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 18px 40px rgba(1, 8, 27, 0.25);
+    padding: 2rem;
+    width: min(90vw, 520px);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.plan-popup h2 {
+    margin: 0;
     color: var(--blue-500);
 }
 
-.delete i {
-    font-size: 1.5rem;
-    transition: all .2s ease;
+.plan-popup p {
+    margin: 0;
+    color: var(--blue-600);
 }
 
-.delete:hover i {
-    transform: scale(1.05);
-    color: var(--blue-900);
-    cursor: pointer;
+.plan-popup .plan-field {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
 }
 
-.del-yes, .del-no {
-    height: 2rem;
-    aspect-ratio: 1 / 1;
-    padding: .3rem;
-    border-radius: 7px;
+.plan-popup .plan-field label {
+    font-weight: 600;
+    color: var(--blue-500);
+}
+
+.plan-popup .plan-field input,
+.plan-popup .plan-field textarea {
+    border: 1px solid var(--blue-200);
+    border-radius: 8px;
+    padding: .75rem 1rem;
     font-size: 1rem;
-    font-weight: bold;
+    font-family: inherit;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.plan-popup .plan-field input:focus,
+.plan-popup .plan-field textarea:focus {
+    outline: none;
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(13, 78, 204, 0.15);
+}
+
+.plan-popup .plan-field textarea {
+    min-height: 6rem;
+    resize: vertical;
+}
+
+.popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.popup-close {
     border: none;
-    color: white;
+    background: none;
+    color: var(--blue-500);
+    font-weight: 600;
+    cursor: pointer;
+    padding: .6rem 1rem;
+    border-radius: 7px;
+    transition: color .2s ease, background-color .2s ease;
+}
+
+.popup-close:hover {
+    color: var(--blue-900);
+    background-color: rgba(1, 8, 27, 0.05);
+}
+
+.popup-primary,
+.popup-danger {
+    border: none;
+    border-radius: 7px;
+    padding: .75rem 1.5rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color .2s ease, transform .2s ease;
+}
+
+.popup-primary {
     background-color: var(--blue-500);
-    transition: all .2s ease;
 }
 
-.del-yes:hover {
-    cursor: pointer;
-    background-color: green;
+.popup-primary:hover {
+    background-color: var(--blue-600);
+    transform: translateY(-1px);
 }
 
-.del-no:hover {
-    cursor: pointer;
-    background-color: rgb(187, 0, 0);
+.popup-danger {
+    background-color: #d64545;
 }
 
-.delete-confirm {
-    max-height: 0;
-    overflow: hidden;
-    transition: all .2s ease-in-out;
-}
-
-.delete-container.deleting .delete-confirm {
-    max-height: unset;
-}
-
-.delete-container.deleting .delete {
-    display: none;
+.popup-danger:hover {
+    background-color: #a93232;
+    transform: translateY(-1px);
 }
 
 .cadastrar {
