@@ -5,6 +5,7 @@ from __future__ import annotations
 from flask import flash, g, redirect, request, url_for
 
 from utils.decorators.Autenticado import autenticado
+from utils.decorators.TipoUsuario import gestor_obrigatorio
 from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
 
 
@@ -13,6 +14,7 @@ class PlanController:
 
 	@staticmethod
 	@autenticado
+	@gestor_obrigatorio
 	def atualizar(plano_id: int):
 		"""Processa a atualização de um plano existente."""
 		nome = request.form.get('nome', '').strip()
@@ -66,6 +68,7 @@ class PlanController:
 
 	@staticmethod
 	@autenticado
+	@gestor_obrigatorio
 	def remover(plano_id: int):
 		"""Remove um plano do catálogo."""
 		try:
