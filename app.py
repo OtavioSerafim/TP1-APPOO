@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, g, redirect, url_for
+from flask import Flask, g, redirect, url_for, current_app
 from models import Models
 from controller.user_controller import UserController
 from controller.auth_controller import AuthController
@@ -21,6 +21,21 @@ if not app.config['SECRET_KEY']:
     raise ValueError("FLASK_SECRET_KEY não definida. Configure no .env")
 
 
+DEFAULT_CAPACIDADE_MAXIMA = 100
+
+app.config.setdefault('ACADEMIA_OCUPACAO_ATUAL', 0)
+app.config.setdefault('ACADEMIA_CAPACIDADE_MAXIMA', DEFAULT_CAPACIDADE_MAXIMA)
+
+
+@app.context_processor
+def inject_academia_status():
+    """Disponibiliza variáveis globais reutilizáveis em todos os templates."""
+    return {
+        'alunos_na_academia': current_app.config.get('ACADEMIA_OCUPACAO_ATUAL', 0),
+        'capacidade_maxima_academia': current_app.config.get('ACADEMIA_CAPACIDADE_MAXIMA', 0),
+    }
+
+
 @app.before_request
 def setup_models():
     g.models = Models()
@@ -34,7 +49,7 @@ def teardown_models(exc=None):
 app.add_url_rule('/cadastro', 'cadastro', UserController.cadastro, methods=['GET', 'POST'])
 app.add_url_rule('/', 'login', UserController.login)
 app.add_url_rule('/auth/login', 'auth_login', AuthController.login, methods=['POST'])
-app.add_url_rule('/gestor', 'gestor', UserController.gestor)
+app.add_url_rule('/gestor', 'gestor', UserController.gestor, methods=['GET', 'POST'])
 app.add_url_rule('/gestor/equipamentos', 'equipamentos', UserController.equipamentos)
 app.add_url_rule('/gestor/equipamentos/novo', 'cadastro-equipamento', UserController.cadastro_equipamento, methods=['GET', 'POST'])
 app.add_url_rule('/gestor/planos', 'planos', UserController.planos)
