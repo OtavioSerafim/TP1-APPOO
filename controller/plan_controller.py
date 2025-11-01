@@ -70,6 +70,14 @@ class PlanController:
 		"""Remove um plano do catálogo."""
 		try:
 			planos_model = g.models.plano
+			if planos_model.possui_alunos_associados(plano_id):
+				flash('Não é possível remover este plano porque há alunos vinculados a ele.', 'error')
+				return redirect(url_for('planos'))
+		except Exception as err:
+			print(f"Erro ao verificar vínculos do plano {plano_id}: {err}")
+			flash('Erro ao validar vínculos do plano. Tente novamente.', 'error')
+			return redirect(url_for('planos'))
+		try:
 			deleted = planos_model.delete(plano_id)
 		except Exception as err:
 			print(f"Erro ao remover plano {plano_id}: {err}")
