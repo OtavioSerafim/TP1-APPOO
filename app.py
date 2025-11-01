@@ -5,6 +5,7 @@ from models import Models
 from controller.user_controller import UserController
 from controller.student_controller import StudentController
 from controller.auth_controller import AuthController
+from controller.plan_controller import PlanController
 from utils.errors.erroAutenticacao import ErroAutenticacao
 
 load_dotenv()
@@ -60,6 +61,8 @@ app.add_url_rule('/gestor/equipamentos', 'equipamentos', UserController.equipame
 app.add_url_rule('/gestor/equipamentos/novo', 'cadastro-equipamento', UserController.cadastro_equipamento, methods=['GET', 'POST'])
 app.add_url_rule('/gestor/planos', 'planos', UserController.planos)
 app.add_url_rule('/gestor/planos/novo', 'cadastro-plano', UserController.cadastro_plano, methods=['GET', 'POST'])
+app.add_url_rule('/gestor/planos/<int:plano_id>/editar', 'atualizar_plano', PlanController.atualizar, methods=['POST'])
+app.add_url_rule('/gestor/planos/<int:plano_id>/remover', 'remover_plano', PlanController.remover, methods=['POST'])
 app.add_url_rule('/gestor/alunos', 'alunos-gestor', UserController.alunos_gestor)
 app.add_url_rule('/gestor/alunos/novo', 'cadastro-aluno', UserController.cadastro_aluno, methods=['GET', 'POST'])
 app.add_url_rule('/gestor/fichas', 'fichas-gestor', UserController.fichas_gestor)
