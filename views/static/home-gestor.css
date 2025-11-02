@@ -1,12 +1,3 @@
-.page-content-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width: 80vw;
-    height: 100vh;
-    padding: 1.5rem;
-}
-
 .gestor-dashboard {
     display: flex;
     flex-direction: column;
