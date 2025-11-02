@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash, g, current_app, jsonify
 
 from utils.decorators.Autenticado import autenticado
+from utils.decorators.TipoUsuario import gestor_obrigatorio
 from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
 
 class UserController:
@@ -188,6 +189,7 @@ class UserController:
     # tela incial - versaõ do gestor
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def gestor():
         if request.method == 'POST':
             capacidade_raw = request.form.get('capacidade_maxima', '').strip()
@@ -214,6 +216,7 @@ class UserController:
     # tela de gestão e visualização de equipamentos - exclusiva do gestor
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def equipamentos():
         if request.method == 'GET':
             equipamentos = g.models.equipamento.get_all() # lista equipamentos
@@ -223,6 +226,7 @@ class UserController:
     # tela de cadastro de equipamentos - exclusiva do gestor
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def cadastro_equipamento():
         if request.method == 'GET':
             usuario = getattr(g, "current_user", None) # dados do usuário
@@ -257,6 +261,7 @@ class UserController:
     # tela de gerenciamento dos alunos - versão do gestor
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def alunos_gestor():
         usuario = getattr(g, "current_user", None) # dados do usuário
         alunos = g.models.aluno.get_all() # lista alunos
@@ -274,6 +279,7 @@ class UserController:
     # tela de cadastro de alunos - exclusiva do gestor
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def cadastro_aluno():
         if request.method == 'GET':
             usuario = getattr(g, "current_user", None) # dados do usuário
@@ -318,6 +324,7 @@ class UserController:
     # tela de gerenciamento dos planos - exclusiva do gestor
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def planos():
         if request.method == 'GET':
             usuario = getattr(g, "current_user", None) # dados do usuário
@@ -328,6 +335,7 @@ class UserController:
     # tela de gerenciamento dos planos - exclusiva do gestor
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def cadastro_plano():
         if request.method == 'GET':
             usuario = getattr(g, "current_user", None) # dados do usuário
@@ -364,6 +372,7 @@ class UserController:
     # tela de autenticação da entrada dos alunos - exclusiva do gestor
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def autentica_entrada():
         usuario = getattr(g, "current_user", None) # dados do usuário
         return render_template('autentica-entrada.html', usuario=usuario)
@@ -371,6 +380,7 @@ class UserController:
     # API que retorna ficha + exercicios
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def api_ficha(ficha_id: int):
         ficha = g.models.ficha.listar_por_id(ficha_id)
         if not ficha:
@@ -381,6 +391,7 @@ class UserController:
     # tela de gerenciamento de fichas - exclusiva do gestor
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def fichas_gestor():
         fichas = g.models.ficha.get_all()
         exercicios = g.models.exercicio.get_all()
@@ -389,6 +400,7 @@ class UserController:
     
     @staticmethod
     @autenticado
+    @gestor_obrigatorio
     def cadastro_ficha_gestor():
         if request.method == 'GET':
             alunos = g.models.aluno.get_all()

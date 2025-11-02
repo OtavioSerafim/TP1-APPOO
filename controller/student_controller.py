@@ -9,12 +9,14 @@ from flask import (
 )
 
 from utils.decorators.Autenticado import autenticado
+from utils.decorators.TipoUsuario import gestor_obrigatorio
 from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
 
 
 class StudentController:
 	@staticmethod
 	@autenticado
+	@gestor_obrigatorio
 	def autentica_entrada():
 		termo_busca = request.args.get('q', '').strip()
 		resultados = []
@@ -34,6 +36,7 @@ class StudentController:
 
 	@staticmethod
 	@autenticado
+	@gestor_obrigatorio
 	def registrar_entrada():
 		redirect_response = StudentController._redirect_back_to_list()
 
@@ -83,6 +86,7 @@ class StudentController:
 
 	@staticmethod
 	@autenticado
+	@gestor_obrigatorio
 	def registrar_saida():
 		redirect_response = StudentController._redirect_back_to_list()
 
@@ -109,6 +113,7 @@ class StudentController:
 
 	@staticmethod
 	@autenticado
+	@gestor_obrigatorio
 	def atualizar_dados(aluno_id: int):
 		redirect_response = redirect(url_for('alunos-gestor'))
 
@@ -177,6 +182,7 @@ class StudentController:
 
 	@staticmethod
 	@autenticado
+	@gestor_obrigatorio
 	def remover(aluno_id: int):
 		redirect_response = redirect(url_for('alunos-gestor'))
 

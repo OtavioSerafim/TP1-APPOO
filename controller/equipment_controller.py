@@ -6,6 +6,7 @@ from flask import flash, g, redirect, request, url_for
 
 from models.equipamento import Equipamento
 from utils.decorators.Autenticado import autenticado
+from utils.decorators.TipoUsuario import gestor_obrigatorio
 from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
 
 
@@ -14,6 +15,7 @@ class EquipmentController:
 
 	@staticmethod
 	@autenticado
+	@gestor_obrigatorio
 	def atualizar(equipamento_id: int):
 		nome = request.form.get('nome', '').strip()
 		valor_raw = request.form.get('valor', '').strip()
@@ -60,6 +62,7 @@ class EquipmentController:
 
 	@staticmethod
 	@autenticado
+	@gestor_obrigatorio
 	def remover(equipamento_id: int):
 		try:
 			equipamentos_model = g.models.equipamento
