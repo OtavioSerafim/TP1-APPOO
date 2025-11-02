@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor | Academia</title>
+    <title>Fichas | Academia</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='fichas-gestor.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,12 +29,9 @@
     <div class="side-menu">
         <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
         <div class="menu-items">
-            <a href="{{ url_for('gestor') }}">Início</a>
-            <a href="{{ url_for('alunos-gestor') }}">Alunos</a>
-            <a href="{{ url_for('autentica-entrada') }}">Entrada</a>
-            <a href="{{ url_for('equipamentos') }}">Equipamentos</a>
-            <a href="{{ url_for('planos') }}">Planos</a>
-            <a href="{{ url_for('fichas-gestor') }}">Fichas</a>
+            <a href="{{ url_for('personal') }}">Início</a>
+            <a href="{{ url_for('alunos-personal') }}">Alunos</a>
+            <a href="{{ url_for('fichas-personal') }}">Fichas</a>
         </div>
         <form method="post" action="{{ url_for('auth_logout') }}">
             <button type="submit" class="logout">Sair</button>
@@ -56,7 +53,7 @@
                 <p>Crie uma ficha!</p>
                 {% endfor %}
             </div>
-            <a href="{{ url_for('cadastro-ficha-gestor') }}" class="cadastrar">Criar ficha</a>
+            <a href="{{ url_for('cadastro-ficha-personal') }}" class="cadastrar">Criar ficha</a>
         </div>
     </div>
 

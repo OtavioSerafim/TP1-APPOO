@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (xs.length === 0) {
         const tr = document.createElement('tr');
         const td = document.createElement('td');
-        td.colSpan = 6;
+        td.colSpan = 7;
         td.textContent = 'Nenhum exercício cadastrado.';
         tr.appendChild(td);
         elTbody.appendChild(tr);
@@ -78,6 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const tdDescanso = document.createElement('td');
           tdDescanso.textContent = ex.tempo_descanso || '-';
           tr.appendChild(tdDescanso);
+          
+          // Observações
+          const tdObservacoes = document.createElement('td');
+          tdObservacoes.textContent = ex.observacoes || '-';
+          tr.appendChild(tdObservacoes);
           
           elTbody.appendChild(tr);
         });

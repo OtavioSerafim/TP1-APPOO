@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor | Academia</title>
+    <title>Personal | Academia</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='home-personal.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,8 +28,9 @@
     <div class="side-menu">
         <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
         <div class="menu-items">
+            <a href="{{ url_for('personal') }}">Início</a>
             <a href="{{ url_for('alunos-personal') }}">Alunos</a>
-            <a href="{{ url_for('fichas') }}">Fichas</a>
+            <a href="{{ url_for('fichas-personal') }}">Fichas</a>
         </div>
         <form method="post" action="{{ url_for('auth_logout') }}">
             <button type="submit" class="logout">Sair</button>
