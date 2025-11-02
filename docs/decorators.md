@@ -22,5 +22,3 @@ from utils.decorators.Autenticado import autenticado
 def area_restrita():
     return render_template('restrita.html', usuario=g.current_user)
 ```
-
-Adicione novos decoradores aqui com uma breve descrição e exemplos de uso prático.
