@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash, g, current_app, jsonify
 
 from utils.decorators.Autenticado import autenticado
-from utils.decorators.TipoUsuario import gestor_obrigatorio
+from utils.decorators.TipoUsuario import gestor_obrigatorio, personal_obrigatorio
 from utils.errors.erroDadosInvalidos import ErroDadosInvalidos
 
 class UserController:
@@ -59,6 +59,7 @@ class UserController:
     
     # tela incial - versaõ do personal
     @staticmethod
+    @personal_obrigatorio
     @autenticado
     def personal():
         if request.method == 'GET':
@@ -67,6 +68,7 @@ class UserController:
     
     # tela de alunos - versaõ do personal
     @staticmethod
+    @personal_obrigatorio
     @autenticado
     def alunos_personal():
         if request.method == 'GET':
@@ -85,6 +87,7 @@ class UserController:
     
     # tela de gerenciamento de fichas - versaõ do personal
     @staticmethod
+    @personal_obrigatorio
     @autenticado
     def fichas_personal():
         if request.method == 'GET':
@@ -95,6 +98,7 @@ class UserController:
         
     # tela de criação de fichas - versaõ do personal
     @staticmethod
+    @personal_obrigatorio
     @autenticado
     def cadastro_ficha_personal():
         if request.method == 'GET':
