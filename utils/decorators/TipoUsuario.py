@@ -17,7 +17,11 @@ def _obter_tipo_usuario() -> str | None:
 		return None
 
 	if hasattr(usuario, "keys"):
-		return usuario.get("tipo_usuario")
+		try:
+			usuario_dict = {chave: usuario[chave] for chave in usuario.keys()}
+		except TypeError:
+			usuario_dict = dict(usuario)
+		return usuario_dict.get("tipo_usuario")
 
 	if isinstance(usuario, (tuple, list)) and len(usuario) > 4:
 		return usuario[4]
