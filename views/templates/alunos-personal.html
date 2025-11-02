@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alunos | Academia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='alunos-gestor.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <script src="{{ url_for('static', filename='scripts/flash-message.js') }}"></script>
+    
+    <div class="side-menu">
+        <h2>Olá, {{ usuario.nome.split()[0] }}!</h2>
+        <div class="menu-items">
+            <a href="{{ url_for('personal') }}">Início</a>
+            <a href="{{ url_for('alunos-personal') }}">Alunos</a>
+            <a href="{{ url_for('fichas-personal') }}">Fichas</a>
+        </div>
+        <form method="post" action="{{ url_for('auth_logout') }}">
+            <button type="submit" class="logout">Sair</button>
+        </form>
+    </div>
+    <div class="page-content-container">
+        <div class="page-content">
+            <h1>Alunos</h1>
+            <div class="tabela">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Personal</th>
+                            <th>Plano</th>
+                            <th>Início do plano</th>
+                            <th>Última entrada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for aluno in alunos %}
+                        <tr>
+                            <td>{{ aluno.nome }}</td>
+                            <td>{{ aluno.email }}</td>
+                            <td>{{ aluno.personal_nome or 'Sem personal' }}</td>
+                            <td>{{ aluno.plano_nome or 'Sem plano' }}</td>
+                            <td>{{ aluno.plano_data_inicio or '—' }}</td>
+                            <td>{{ aluno.data_ultima_entrada or '—' }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="6">Nenhum aluno cadastrado.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="student-popup-overlay" id="student-edit-popup">
+        <div class="student-popup">
+            <h2>Editar aluno</h2>
+            <form id="student-edit-form" method="post" data-update-action-template="{{ url_for('atualizar_aluno', aluno_id=0) }}">
+                <div class="student-field">
+                    <label for="student-name"><p>Nome:</p></label>
+                    <input type="text" name="nome" id="student-name" required>
+                </div>
+                <div class="student-field">
+                    <label for="student-email"><p>E-mail:</p></label>
+                    <input type="email" name="email" id="student-email" required>
+                </div>
+                <div class="student-select">
+                    <label for="student-personal"><p>Personal trainer:</p></label>
+                    <select name="personal_id" id="student-personal">
+                        <option value="">Sem personal</option>
+                        {% for personal in personals %}
+                        <option value="{{ personal['id'] }}">{{ personal['nome'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="student-select">
+                    <label for="student-plan"><p>Plano:</p></label>
+                    <select name="plano_id" id="student-plan">
+                        <option value="">Sem plano</option>
+                        {% for plano in planos %}
+                        <option value="{{ plano['id'] }}">{{ plano['nome'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="student-field">
+                    <label for="student-plan-start"><p>Data de início do plano:</p></label>
+                    <input type="date" name="plano_data_inicio" id="student-plan-start">
+                </div>
+                <div class="popup-actions">
+                    <button type="button" class="popup-close">Cancelar</button>
+                    <button type="submit" class="popup-primary">Salvar alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="student-popup-overlay" id="student-delete-popup">
+        <div class="student-popup student-popup-danger">
+            <form id="student-delete-form" method="post" data-delete-action-template="{{ url_for('remover_aluno', aluno_id=0) }}">
+                <h2>Remover aluno</h2>
+                <p class="student-delete-text">
+                    Tem certeza de que deseja remover <strong id="student-delete-name"></strong>?
+                    Essa ação não pode ser desfeita.
+                </p>
+                <div class="popup-actions">
+                    <button type="button" class="popup-close">Cancelar</button>
+                    <button type="submit" class="popup-danger">Remover aluno</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts/alunos.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/processa-logout.js') }}"></script>
+</body>
+</html>

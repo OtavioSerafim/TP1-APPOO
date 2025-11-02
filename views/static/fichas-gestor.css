@@ -150,22 +150,16 @@
 
 /* Distribuição das colunas */
 .ficha-detalhes table th:nth-child(1),
-.ficha-detalhes table td:nth-child(1) {
-    width: 25%;
-}
-
+.ficha-detalhes table td:nth-child(1) { width: 20%; }  /* Exercício */
 .ficha-detalhes table th:nth-child(2),
-.ficha-detalhes table td:nth-child(2) {
-    width: 20%;
-}
-
+.ficha-detalhes table td:nth-child(2) { width: 16%; }  /* Equipamento */
 .ficha-detalhes table th:nth-child(3),
-.ficha-detalhes table td:nth-child(3),
+.ficha-detalhes table td:nth-child(3) { width: 10%; }  /* Séries */
 .ficha-detalhes table th:nth-child(4),
-.ficha-detalhes table td:nth-child(4),
+.ficha-detalhes table td:nth-child(4) { width: 10%; }  /* Repetições */
 .ficha-detalhes table th:nth-child(5),
-.ficha-detalhes table td:nth-child(5),
+.ficha-detalhes table td:nth-child(5) { width: 12%; }  /* Carga */
 .ficha-detalhes table th:nth-child(6),
-.ficha-detalhes table td:nth-child(6) {
-    width: 13.75%;
-}
+.ficha-detalhes table td:nth-child(6) { width: 12%; }  /* Descanso */
+.ficha-detalhes table th:nth-child(7),
+.ficha-detalhes table td:nth-child(7) { width: 20%; }  /* Observações */
