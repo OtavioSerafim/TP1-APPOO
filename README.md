@@ -16,12 +16,13 @@ O objetivo central é comprovar, na prática, os conceitos de orientação a obj
 - Regras de sessão baseadas em **JWT** com hashing de senha (`bcrypt`) encapsulado em `models.Usuario`.
 - Serviços de domínio para **listar, cadastrar e atualizar** equipamentos, planos, fichas e exercícios.
 - Estrutura pronta para extensão de turmas, relatórios e dashboards específicos de personal, mantendo a lógica no backend.
+- Monitoramento da ocupação da academia via contexto global, alimentando templates com dados em tempo real.
 
 ## 🧱 Arquitetura em camadas
 A aplicação adota uma separação clara de responsabilidades:
 
-- `app.py`: configura o Flask, registra rotas e fornece um contexto de modelos por requisição via `g.models`.
-- `controller/`: camadas de controle (`UserController`, `AuthController`) que recebem requisições HTTP, realizam validações mínimas e delegam decisões aos modelos.
+- `app.py`: configura o Flask, registra rotas, fornece um contexto de modelos por requisição via `g.models` e expõe dados globais de ocupação da academia através de um *context processor*.
+- `controller/`: camadas de controle (`UserController`, `AuthController`, `StudentController`, `PlanController`, `EquipmentController`) que recebem requisições HTTP, realizam validações mínimas e delegam decisões aos modelos.
 - `models/`: camada de persistência em SQLite com classes que herdam de uma base `Model`. Há modelos compostos (`Aluno`, `Personal`, `Gestor`) que estendem `Usuario` para compartilhar comportamento.
 - `views/`: templates Jinja2 e assets estáticos usados apenas para renderizar o resultado das regras de negócio encapsuladas no backend.
 - `utils/`: decoradores e classes de erro que padronizam autenticação, mensagens e validação de dados.
@@ -114,16 +115,31 @@ O arquivo `models/main.py` define a classe `Models`, responsável por abrir uma 
 | `/cadastro` | GET/POST | Pública | Cadastro de novos usuários (gestor ou personal).
 | `/auth/login` | POST | Pública | Endpoint de autenticação (form ou JSON).
 | `/auth/logout` | POST | Protegida | Finaliza a sessão apagando o JWT.
-| `/gestor` | GET | @autenticado | Dashboard do gestor.
+| `/personal` | GET | @autenticado | Dashboard do personal trainer.
+| `/personal/alunos` | GET | @autenticado | Listagem dos alunos atribuídos ao personal.
+| `/personal/fichas` | GET | @autenticado | Consulta fichas de treino relacionadas ao personal.
+| `/personal/fichas/novo` | GET/POST | @autenticado | Cadastro de fichas feito pelo personal.
+| `/gestor` | GET/POST | @autenticado | Dashboard do gestor com widgets de ocupação e formulários rápidos.
 | `/gestor/equipamentos` | GET | @autenticado | Lista equipamentos cadastrados.
 | `/gestor/equipamentos/novo` | GET/POST | @autenticado | Criação de equipamentos.
+| `/gestor/equipamentos/<int:id>/editar` | POST | @autenticado | Atualiza dados de um equipamento existente.
+| `/gestor/equipamentos/<int:id>/remover` | POST | @autenticado | Remove um equipamento.
 | `/gestor/planos` | GET | @autenticado | Lista planos disponíveis.
 | `/gestor/planos/novo` | GET/POST | @autenticado | Criação de planos.
+| `/gestor/planos/<int:id>/editar` | POST | @autenticado | Atualiza detalhes de um plano.
+| `/gestor/planos/<int:id>/remover` | POST | @autenticado | Remove um plano.
 | `/gestor/alunos` | GET | @autenticado | Painel inicial de alunos.
-| `/gestor/alunos/novo` | GET | @autenticado | Formulário para cadastro manual de alunos.
+| `/gestor/alunos/novo` | GET/POST | @autenticado | Cadastro manual de alunos.
+| `/gestor/alunos/<int:id>/editar` | POST | @autenticado | Atualiza informações de um aluno.
+| `/gestor/alunos/<int:id>/remover` | POST | @autenticado | Remove um aluno da base.
+| `/gestor/fichas` | GET | @autenticado | Gestão das fichas criadas para alunos.
+| `/gestor/fichas/novo` | GET/POST | @autenticado | Cadastro de fichas pelo gestor.
+| `/api/fichas/<int:id>` | GET | @autenticado | Endpoint JSON com detalhes de uma ficha específica.
 | `/gestor/entrada` | GET | @autenticado | Tela de autenticação de entrada de alunos.
+| `/gestor/entrada/registrar` | POST | @autenticado | Registra a entrada de um aluno e marca presença.
+| `/gestor/entrada/saida` | POST | @autenticado | Registra a saída de um aluno, liberando vaga.
 
-> ℹ️ As telas de personal trainer e operações completas de fichas/exercícios estão preparadas na camada de modelos, mas ainda demandam integração futura com as views.
+> ℹ️ As rotas protegidas também aplicam `@gestor_obrigatorio` ou `@personal_obrigatorio` conforme o perfil, garantindo que cada usuário acesse somente sua área.
 
 ## 📦 Dependências principais
 - [Flask 3](https://flask.palletsprojects.com/) como camada de interface HTTP e renderização de templates; a lógica de domínio permanece fora das views.
