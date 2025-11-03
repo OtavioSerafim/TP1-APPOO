@@ -1,4 +1,4 @@
-# TP1-APPOO — Backend Orientado a Objetos para Gestão de Academia
+# TP1-APPOO — Orientação a Objetos para Gestão de Academia
 
 Projeto backend desenvolvido como trabalho prático da disciplina **Análise, Projeto e Programação Orientados a Objetos (APPOO)**. A aplicação implementa o núcleo de negócios de uma academia, com foco em modelagem orientada a objetos, regras de autenticação, gerenciamento de usuários, planos e equipamentos. O Flask é utilizado como camada de entrega HTTP, expondo o domínio por meio de templates e rotas finas.
 
