@@ -59,8 +59,8 @@ class UserController:
     
     # tela incial - versaõ do personal
     @staticmethod
-    @personal_obrigatorio
     @autenticado
+    @personal_obrigatorio
     def personal():
         if request.method == 'GET':
             usuario = getattr(g, "current_user", None) # dados do usuário
@@ -68,8 +68,8 @@ class UserController:
     
     # tela de alunos - versaõ do personal
     @staticmethod
-    @personal_obrigatorio
     @autenticado
+    @personal_obrigatorio
     def alunos_personal():
         if request.method == 'GET':
             alunos = g.models.aluno.get_all() # lista alunos
@@ -87,8 +87,8 @@ class UserController:
     
     # tela de gerenciamento de fichas - versaõ do personal
     @staticmethod
-    @personal_obrigatorio
     @autenticado
+    @personal_obrigatorio
     def fichas_personal():
         if request.method == 'GET':
             fichas = g.models.ficha.get_all()
@@ -98,8 +98,8 @@ class UserController:
         
     # tela de criação de fichas - versaõ do personal
     @staticmethod
-    @personal_obrigatorio
     @autenticado
+    @personal_obrigatorio
     def cadastro_ficha_personal():
         if request.method == 'GET':
             alunos = g.models.aluno.get_all()
